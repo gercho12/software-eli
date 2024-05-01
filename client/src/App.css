@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
-
+        *{
+            box-sizing: border-box;
+        }
         body {
             margin: 0;
             padding: 0;
@@ -217,7 +219,7 @@
             align-items: center;
             flex-wrap: wrap;
         }
-        .dashboard .tituloprinc h1{
+        h1{
             font-size: 36px;
             font-weight: 600;
             color: #3b3b3b;
@@ -232,7 +234,6 @@
          button{
             border: none;
             background-color: rgba(0, 0, 0, 0.06);
-            flex: 1;
             min-height: 50px;
             box-sizing: border-box;
             border-radius: 45px;
@@ -649,5 +650,120 @@
             font-size: 20px;
             font-weight: 400;
         }
+        
+        .proveedores{
+            display: flex;
+            box-sizing: border-box;
+            padding: 25px;
+            gap: 10px;
+            height: 100vh;
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        .proveedores .left{
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex: 1;
+            height: 100%;
+
+        }
+        .proveedores .right{
+            width: 380px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .proveedores .right .botones{
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+
+        }
+        .proveedores .right .botones button{
+            width: 100%;
+        }
+
+        .proveedores .right .dataProveedor{
+           background-color: rgba(0, 0, 0, 0.06); 
+           border-radius: 45px;
+
+           position: relative;
+        }
+        .proveedores .right .dataProveedor h3.tituloData{
+            font-size: 18px;
+            font-weight: 300;
+            color: #3b3b3b;
+            padding-top: 20px;
+            padding-left: 24px;
+        }
+        .proveedores .right .dataProveedor h2.nombreProveedor{
+            font-size: 36px;
+            font-weight: 500;
+            color: #3b3b3b;
+            white-space: nowrap;
+            padding-left: 24px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .proveedores .right .dataProveedor .informacion{
+            padding-left: 24px;
+            padding-block: 12px;
+            width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        }
+        .proveedores .right .dataProveedor .informacion:nth-of-type(1){
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+        
+        .proveedores .right .dataProveedor .informacion h2{
+            font-size: 22px;
+            font-weight: 500;
+            color: #3b3b3b;
+        }
+        .proveedores .right .dataProveedor .informacion h3{
+            font-size: 18px;
+            font-weight: 300;
+            color: #3b3b3b;
+        }
+        .proveedores .right .dataProveedor .informacion span{
+            font-weight: 500;
+        }
+
+        .proveedores .left .listaProveedores{
+            background-color: rgba(0, 0, 0, 0.06);
+            padding-block: 20px;
+            padding-inline: 24px;
+            border-radius: 45px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            height: 100%;
+        }
+        .proveedores .left .listaProveedores .top{
+            display: flex;
+            gap: 15px;
+        }
+        .proveedores .left .listaProveedores .top input{
+            border: none;
+            flex: 1;
+            border-radius: 40px;
+            padding-left:15px ;
+            font-weight: 400;
+            font-size: 16px;
+        }
+        .proveedores .left .listaProveedores .top button{
+            width: 250px;
+            color: #ffff;
+            background-color: #3b3b3b;
+        }
+        
+
 
 

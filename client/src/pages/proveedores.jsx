@@ -10,7 +10,7 @@ const Proveedores = () => {
   useEffect(() => {
     // Simulación de datos del backend
     const datosDelBackend = [
-      { nombre: "provedor 1", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
+      { nombre: "Arcor indistriues S.A", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
       { nombre: "provedor 2", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
       { nombre: "provedor 3", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
       { nombre: "provedor 4", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
@@ -21,6 +21,7 @@ const Proveedores = () => {
   }, []);
 
   const handleProvedorClick = (datosProveedor) => {
+    setModoCreacion(false);
     setSeleccionadoProveedor(datosProveedor);
   };
   const nuevoProveedor = () => {
@@ -43,10 +44,6 @@ const Proveedores = () => {
               </button>
             </div>
             <div className="listado">
-              <div className="proveedor">
-                <h2>Nombre</h2>
-                <h3>1-234CUIT123-4</h3>
-              </div>
               {proveedores.map(({ nombre, cuit, telefono, email }) => {
                   const datosProveedor = {nombre, cuit, telefono, email};
                   return (
@@ -69,16 +66,16 @@ const Proveedores = () => {
             </button>
           </div>
           <div className="dataProveedor">
-            <h3>Proveedor seleccionado</h3>
+            <h3 className='tituloData'>Proveedor seleccionado</h3>
             {seleccionadoProveedor && !modoCreacion ? (
               <>
-                <h2>{seleccionadoProveedor.nombre}</h2>
-                <div className="informacionLegal">
+                <h2 className='nombreProveedor'>{seleccionadoProveedor.nombre}</h2>
+                <div className="informacionLegal informacion">
                   <h2>Información legal</h2>
                   <h3>CUIT: <span>{seleccionadoProveedor.cuit}</span></h3>
                   <h3>CUIT: <span>{seleccionadoProveedor.cuit}</span></h3>
                 </div>
-                <div className="informacionContacto">
+                <div className="informacionContacto informacion">
                   <h2>Información de contacto</h2>
                   <h3>Teléfono: <span>{seleccionadoProveedor.telefono}</span></h3>
                   <h3>Email: <span>{seleccionadoProveedor.email}</span></h3>
