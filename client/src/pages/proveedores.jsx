@@ -9,10 +9,15 @@ const Proveedores = () => {
 
   useEffect(() => {
     // Simulación de datos del backend
-    const datosDelBackend = [
-      { nombre: "Arcor indistriues S.A", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
-      { nombre: "provedor 2", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
-      { nombre: "provedor 3", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
+    var datosDelBackend = [
+      { nombre: "Arcor indistriues S.A", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com", nota:"aa" },
+      { nombre: "provedor 2", cuit: "30-123456-1", telefono: 1153463527, email:"example@gmail.com", nota:"aa" },
+      { nombre: "provedor 3", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com", nota:"aa" },
+      { nombre: "provedor 4", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com", nota:"aa" },
+      { nombre: "provedor 4", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
+      { nombre: "provedor 4", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
+      { nombre: "provedor 4", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
+      { nombre: "provedor 4", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
       { nombre: "provedor 4", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
     ];
     setProveedores(datosDelBackend);
@@ -65,10 +70,11 @@ const Proveedores = () => {
               Editar
             </button>
           </div>
-          <div className="dataProveedor">
-            <h3 className='tituloData'>Proveedor seleccionado</h3>
+
             {seleccionadoProveedor && !modoCreacion ? (
               <>
+              <div className="dataProveedor">
+                <h3 className='tituloData'>Proveedor seleccionado</h3>
                 <h2 className='nombreProveedor'>{seleccionadoProveedor.nombre}</h2>
                 <div className="informacionLegal informacion">
                   <h2>Información legal</h2>
@@ -80,13 +86,22 @@ const Proveedores = () => {
                   <h3>Teléfono: <span>{seleccionadoProveedor.telefono}</span></h3>
                   <h3>Email: <span>{seleccionadoProveedor.email}</span></h3>
                 </div>
-              </>
+              </div>
+              <div className="notaProveedor">
+                <textarea 
+                value={seleccionadoProveedor.nota} 
+                onChange={(e) => {
+                setSeleccionadoProveedor((prevProveedor) => ({ ...prevProveedor, nota: e.target.value }));
+                }}
+                ></textarea>
+              </div>
+            </>
             ) : !seleccionadoProveedor && !modoCreacion ? (
               <h2>Seleccione un proveedor</h2>
             ) : (
               <h2>Modo creación</h2>
             )}
-          </div>
+
         </div>
       </div>
     </div>
