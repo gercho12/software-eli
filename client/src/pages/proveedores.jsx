@@ -1,37 +1,88 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import '../App.css';
-import Navbar from  '../components/navbar';
+import Navbar from '../components/navbar';
 
 const Proveedores = () => {
   const [proveedores, setProveedores] = useState([]);
   const [seleccionadoProveedor, setSeleccionadoProveedor] = useState(null);
+  const [proveedorEditado, setProveedorEditado] = useState(seleccionadoProveedor);
   const [modoCreacion, setModoCreacion] = useState(false);
+  const [modoEdicion, setModoEdicion] = useState([false, ""]);
 
   useEffect(() => {
-    // Simulación de datos del backend
-    var datosDelBackend = [
-      { nombre: "Arcor indistriues S.A", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com", nota:"aa" },
-      { nombre: "provedor 2", cuit: "30-123456-1", telefono: 1153463527, email:"example@gmail.com", nota:"aa" },
-      { nombre: "provedor 3", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com", nota:"aa" },
-      { nombre: "provedor 4", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com", nota:"aa" },
-      { nombre: "provedor 4", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
-      { nombre: "provedor 4", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
-      { nombre: "provedor 4", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
-      { nombre: "provedor 4", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
-      { nombre: "provedor 4", cuit: 12345678, telefono: 1153463527, email:"example@gmail.com" },
-    ];
-    setProveedores(datosDelBackend);
-    const ultimoProveedor = datosDelBackend[datosDelBackend.length - 1];
-    setSeleccionadoProveedor(ultimoProveedor);
+    const fetchData = async () => {
+      try {
+        const result = await axios.get('http://localhost:8800/proveedor');
+        setProveedores(result.data);
+        console.log(result)
+      } catch (error) {
+        console.log(error)
+        
+      }
+
+    };
+
+    fetchData();
   }, []);
 
   const handleProvedorClick = (datosProveedor) => {
     setModoCreacion(false);
-    setSeleccionadoProveedor(datosProveedor);
+    setModoEdicion([false, ""]);
+    setSeleccionadoProveedor({
+      id: datosProveedor.id,
+      nombre: datosProveedor.nombre,
+      cuit: datosProveedor.cuit,
+      telefono: datosProveedor.telefono,
+      email: datosProveedor.email,
+      nota: '', // Inicializa nota como cadena vacía
+    });
+    setProveedorEditado({
+      id: datosProveedor.id,
+      nombre: datosProveedor.nombre,
+      cuit: datosProveedor.cuit,
+      telefono: datosProveedor.telefono,
+      email: datosProveedor.email,
+      nota: '', // Inicializa nota como cadena vacía
+    });
   };
+
   const nuevoProveedor = () => {
     setModoCreacion(true);
+    setModoEdicion([false, ""]);
+
   };
+  const enModoEdicion = (id) => {
+    setModoEdicion([true, id]);
+  };
+
+  const handleGuardarEdicion = async () => {
+    setModoEdicion([false, ""]);
+
+    const datosActualizados = {
+      nombre: proveedorEditado.nombre,
+      cuit: proveedorEditado.cuit,
+      telefono: proveedorEditado.telefono,
+      email: proveedorEditado.email,
+      nota: proveedorEditado.nota,
+    };
+    try {
+      await axios.put(`http://localhost:8800/proveedor/${seleccionadoProveedor.id}`, datosActualizados);
+      // Update the proveedores state with the new data
+      const result = await axios('http://localhost:8800/proveedor');
+      setProveedores(result.data);
+      setSeleccionadoProveedor(datosActualizados)
+    } catch (error) {
+      console.log(error.response.data)
+    }
+
+  };
+
+  const actualizarNota = (event) => {
+    setProveedorEditado({...proveedorEditado, nota: event.target.value})
+    handleGuardarEdicion();
+  };
+
   return (
     <div className="app">
     <Navbar />
@@ -49,8 +100,8 @@ const Proveedores = () => {
               </button>
             </div>
             <div className="listado">
-              {proveedores.map(({ nombre, cuit, telefono, email }) => {
-                  const datosProveedor = {nombre, cuit, telefono, email};
+              {proveedores.map(({ id, nombre, cuit, telefono, email }) => {
+                  const datosProveedor = {id, nombre, cuit, telefono, email};
                   return (
                     <div className="proveedor" onClick={() => handleProvedorClick(datosProveedor)}>
                       <h2>{nombre}</h2>
@@ -62,46 +113,117 @@ const Proveedores = () => {
           </div>
         </div>
         <div className="right">
-          <div className="botones">
-            <button className="eleminar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+
+          {/* <div className="botones">
+            <button className="eleminar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12.562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
               Eliminar
             </button>
-            <button className="editar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>
+            <button className="editar"  onClick={() => seleccionadoProveedor && enModoEdicion(seleccionadoProveedor.id)}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>
               Editar
+            </button> 
+            <button className="editar" onClick={() => seleccionadoProveedor && setModoEdicion([true, seleccionadoProveedor.id])}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>
+              Guadrdar
             </button>
+          </div> */}
+
+  {seleccionadoProveedor ? (
+      modoEdicion[0] ? (
+        <>
+        <div className="botones">
+            <button className="eleminar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12.562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+              Eliminar
+            </button>
+            <button className="guardar"  onClick={handleGuardarEdicion}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>
+              Guardar
+            </button> 
+        </div>
+        <div className="dataProveedor">
+          <h3 className='tituloData'>Edicion de proveedor</h3>
+          <input 
+            className='nombreProveedor' 
+            value={proveedorEditado.nombre} 
+            onChange={(event) => setProveedorEditado({...proveedorEditado, nombre: event.target.value})}
+          />
+          <div className="informacionLegal informacion">
+            <h2>Información legal</h2>
+            <h3>CUIT: 
+              <input 
+                type='text' 
+                value={proveedorEditado.cuit} 
+                onChange={(event) => setProveedorEditado({...proveedorEditado, cuit: event.target.value})}
+              />
+            </h3>
           </div>
-
-            {seleccionadoProveedor && !modoCreacion ? (
-              <>
-              <div className="dataProveedor">
-                <h3 className='tituloData'>Proveedor seleccionado</h3>
-                <h2 className='nombreProveedor'>{seleccionadoProveedor.nombre}</h2>
-                <div className="informacionLegal informacion">
-                  <h2>Información legal</h2>
-                  <h3>CUIT: <span>{seleccionadoProveedor.cuit}</span></h3>
-                  <h3>CUIT: <span>{seleccionadoProveedor.cuit}</span></h3>
-                </div>
-                <div className="informacionContacto informacion">
-                  <h2>Información de contacto</h2>
-                  <h3>Teléfono: <span>{seleccionadoProveedor.telefono}</span></h3>
-                  <h3>Email: <span>{seleccionadoProveedor.email}</span></h3>
-                </div>
-              </div>
-              <div className="notaProveedor">
-                <textarea 
-                value={seleccionadoProveedor.nota} 
-                onChange={(e) => {
-                setSeleccionadoProveedor((prevProveedor) => ({ ...prevProveedor, nota: e.target.value }));
-                }}
-                ></textarea>
-              </div>
-            </>
-            ) : !seleccionadoProveedor && !modoCreacion ? (
-              <h2>Seleccione un proveedor</h2>
-            ) : (
-              <h2>Modo creación</h2>
-            )}
-
+          <div className="informacionContacto informacion">
+            <h2>Información de contacto</h2>
+            <h3>Teléfono: 
+              <input 
+                type='text' 
+                value={proveedorEditado.telefono} 
+                onChange={(event) => setProveedorEditado({...proveedorEditado, telefono: event.target.value})}
+              />
+            </h3>
+            <h3>Email: 
+              <input 
+                type='text' 
+                value={proveedorEditado.email} 
+                onChange={(event) => setProveedorEditado({...proveedorEditado, email: event.target.value})}
+              />
+            </h3>
+          </div>
+        </div>
+        <div className="notaProveedor">
+          <h2>Nota del proveedor</h2>
+          <input 
+            value={proveedorEditado.nota} 
+            onChange={(event) => setProveedorEditado({...proveedorEditado, nota: event.target.value})}
+          />
+        </div>
+      </>
+      ) : modoCreacion ? (
+        <h2>Modo creación</h2>
+      ) : (
+        <>
+          <div className="botones">
+            <button className="eleminar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12.562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+              Eliminar
+            </button>
+            <button className="editar"  onClick={() => enModoEdicion(seleccionadoProveedor.id)}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>
+              Editar
+            </button> 
+          </div>
+          <div className="dataProveedor">
+            <h3 className='tituloData'>Proveedor seleccionado</h3>
+            <h2 className='nombreProveedor'>{seleccionadoProveedor.nombre}</h2>
+            <div className="informacionLegal informacion">
+              <h2>Información legal</h2>
+              <h3>CUIT: <span>{seleccionadoProveedor.cuit}</span></h3>
+            </div>
+            <div className="informacionContacto informacion">
+              <h2>Información de contacto</h2>
+              <h3>Teléfono: <span>{seleccionadoProveedor.telefono}</span></h3>
+              <h3>Email: <span>{seleccionadoProveedor.email}</span></h3>
+            </div>
+          </div>
+          <div className="notaProveedor">
+            <h2>Nota del proveedor</h2>
+            <input defaultValue={seleccionadoProveedor.nota} onBlur={(event) => actualizarNota(event)} name='nota'/>
+          </div>
+        </>
+      )
+      ) : (
+      modoEdicion[0] ? (
+        <h2>Seleccione un proveedor, tienes que editar un proveedor.</h2>
+      ) : modoCreacion ? (
+        <h2>Modo creación</h2>
+      ) : (
+        <h2>Seleccione un proveedor</h2>
+      )
+      )}
         </div>
       </div>
     </div>
