@@ -120,85 +120,7 @@
         .app{
             display: flex;
         }
-        @media (max-width: 768px) {
-            .navbar{
-                width:100vw;
-                height: 65px;
-                background-color: rgb(241, 241, 241);
-                position: fixed;
-    
-            }
-            .navbarInner{
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                padding:15px;
-                box-sizing: border-box;
-                width: 100%;
-                height: 100%;
-            }
-            .navbarInner .top{
-                display: flex;
-                align-items: center;
-                flex-direction: row;
-                gap: 20px;
-            }
-            .navbarInner .top .logo{
-                width: 50px;
-                aspect-ratio: 1/1;
-                background-color: #3b3b3b;
-                border-radius: 20px;
-                display: none;
-            }
-            .navbarInner .logo{
-                width: 100%;
-                margin-bottom: 20px;
-            }
-            .navbarInner .links{
-                display: flex;
-                flex-direction: row;
-                gap: 15px;
-    
-            }
-            .navbarInner .user{
-                background-color: rgba(0, 0, 0, 0.06);
-                
-                padding: 5px;
-                border-radius: 50px;
-                height: 100%;
-                display: flex;
-                flex-direction: row;
-                gap: 5px;
-                width: 50px;
-    
-            }    
-            .navbarInner .user img{
-            display: none;
-            }
-            .navbarInner .user .logout{
-                height: 100%;
-                aspect-ratio: 1/1;
-                border-radius: 40px;
-                background-color: rgba(0, 0, 0, 0.06);
-                aspect-ratio: 1/1;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                }
-            .navbarInner .user .logout svg{
-                width: 22px;
-            }
-            .navbarInner .links .link{
-                padding: 6.5%;
-                width: 45px;
-                box-sizing: border-box;
-                height: 45px;
-            }
-            .app{
-                flex-direction: column-reverse;
-            }
-        }
+
         .dashboard{
             box-sizing: border-box;
             padding: 25px;
@@ -546,9 +468,9 @@
             .dashboard .grid .right .facturasNoa h2:last-of-type{
                 width: auto;
             }
-            .dashboard{
+            .dashboard, .proveedores {
                 padding: 10px;
-                padding-bottom: 65px;
+                padding-bottom: 75px;
             }
               
            }
@@ -659,6 +581,7 @@
             height: 100vh;
             overflow-x: auto;
             width: 100%;
+            flex-wrap: wrap;
         }
 
         .proveedores .left{
@@ -684,10 +607,11 @@
         }
         .proveedores .right .botones button{
             width: 100%;
+            background-color: #F0F0F0;
         }
 
         .proveedores .right .dataProveedor{
-           background-color: rgba(0, 0, 0, 0.06); 
+           background-color: #F0F0F0; 
            border-radius: 45px;
            padding-block: 20px;
             width: 100%;
@@ -764,6 +688,7 @@
             border-radius: 25px;
             border: none;
             padding-left: 10px;
+            margin-left: 10px;
 
         }
         .proveedores .right .dataProveedor input::placeholder{
@@ -773,7 +698,7 @@
         /* fin modo edicion */
 
         .proveedores .right .notaProveedor{
-            background-color: rgba(111, 99, 99, 0.06); 
+            background-color: #F0F0F0; 
             border-radius: 45px;
             padding-block-start: 20px;
             padding-bottom: 24px;
@@ -795,6 +720,7 @@
             padding-block: 12px;
             padding-inline:14px;
             font-weight: 400;
+            font-size: 16px;
 
         }
         .proveedores .left .listaProveedores{
@@ -844,11 +770,23 @@
             color: #3b3b3b;
 
         }
-        
+        .proveedores .left .listaProveedores .listado .proveedor.selected{
+            background-color: #3b3b3b;
+            color: #ffffff;
+
+        }
+        .proveedores .left .listaProveedores .listado .proveedor.selected h2{
+            color: #ffffff;
+
+        }       .proveedores .left .listaProveedores .listado .proveedor.selected h3{
+            color: #ffffff;
+
+        }
 
         .proveedores .left .listaProveedores .top{
             display: flex;
             gap: 15px;
+            flex-wrap: wrap;
         }
         .proveedores .left .listaProveedores .top input{
             border: none;
@@ -857,13 +795,191 @@
             padding-left:15px ;
             font-weight: 400;
             font-size: 16px;
+            height: 50px;
         }
         .proveedores .left .listaProveedores .top button{
+            width: 100%;
             width: 250px;
             color: #ffff;
             background-color: #3b3b3b;
         }
+
+        .right.show {
+            display: flex; /* Mostrar cuando es necesario */
+          }
+          .overlay {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              right: 0;
+              bottom: 0;
+              background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+              z-index: 999; /* Un nivel inferior al panel derecho */
+              display: none; /* Ocultar por defecto */
+          }
+          .overlay.show {
+              display: block;
+            }
+            @media (max-width: 585px) {
+   
+                .proveedores .left .listaProveedores .listado .proveedor{
+                    background-color: rgba(0, 0, 0, 0.06);
+
+                    max-width: 36.5vw;
+                    min-width: 36.5vw;
+                    border-radius: 4.62vw;
+                }
+
+                .proveedores .left .listaProveedores .listado{
+                    flex-wrap: wrap;
+    
+                    } 
+                .proveedores .left .listaProveedores .listado .proveedor h2{
+                    font-size: 3.7vw;
+                }
+                .proveedores .left .listaProveedores .listado .proveedor h3{
+                    font-size: 3.3vw;
         
+                }
+                .proveedores .left .listaProveedores .top button{
+                    width: 100%;
+                }
+            }
+          
+          @media (max-width: 1023px) {
+            .proveedores{
+                gap: 20px;
+            }
+            .proveedores .right {
+                width: 100%;
+                height: 600px;
+              }
+          }
+          
 
 
+          @media (max-width: 1040px) {
+            .dashboard .grid {
+               display: flex;
+               flex-direction: column;
+            max-height: none;
 
+             }
+             .dashboard .grid .right{
+                width: 100%;
+                min-width: none;
+                min-width: 250px;
+
+             }
+           }
+           @media (max-width: 425px) {
+            .dashboard .grid .left .targetas{
+               display: flex;
+               flex-direction: column;
+             }
+             .dashboard .grid .left .targetas .targeta{
+                width: 100%;
+              }
+            .dashboard .grid .right .facturasNoa .boton{
+                display: none;
+            }
+            .dashboard .grid .right .facturasNoa .facturaNoa{
+                display: flex;
+                justify-content: center;
+            }
+            .dashboard .grid .right .facturasNoa h2:last-of-type{
+                width: auto;
+            }
+
+              
+           }
+          
+           @media (max-width: 768px) {
+            .dashboard{
+                padding: 10px;
+                padding-bottom: 75px;
+            }
+            .proveedores{
+                padding: 10px;
+                padding-bottom: 75px;
+            }
+            .navbar{
+                width:100vw;
+                height: 65px;
+                background-color: rgb(241, 241, 241);
+                position: fixed;
+    
+            }
+            .navbarInner{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding:15px;
+                box-sizing: border-box;
+                width: 100%;
+                height: 100%;
+            }
+            .navbarInner .top{
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+                gap: 20px;
+            }
+            .navbarInner .top .logo{
+                width: 50px;
+                aspect-ratio: 1/1;
+                background-color: #3b3b3b;
+                border-radius: 20px;
+                display: none;
+            }
+            .navbarInner .logo{
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .navbarInner .links{
+                display: flex;
+                flex-direction: row;
+                gap: 15px;
+    
+            }
+            .navbarInner .user{
+                background-color: rgba(0, 0, 0, 0.06);
+                
+                padding: 5px;
+                border-radius: 50px;
+                height: 100%;
+                display: flex;
+                flex-direction: row;
+                gap: 5px;
+                width: 50px;
+    
+            }    
+            .navbarInner .user img{
+            display: none;
+            }
+            .navbarInner .user .logout{
+                height: 100%;
+                aspect-ratio: 1/1;
+                border-radius: 40px;
+                background-color: rgba(0, 0, 0, 0.06);
+                aspect-ratio: 1/1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                }
+            .navbarInner .user .logout svg{
+                width: 22px;
+            }
+            .navbarInner .links .link{
+                padding: 6.5%;
+                width: 45px;
+                box-sizing: border-box;
+                height: 45px;
+            }
+            .app{
+                flex-direction: column-reverse;
+            }
+        }

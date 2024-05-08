@@ -62,8 +62,27 @@ app.get('/proveedor', (req, res) => {
       return res.json(data)
     });
   });
+  app.get('/intervalos', (req, res) => {
+    const intervalo = req.query.intervalo; // Obtener el intervalo seleccionado desde la query
+    let q;
+    if (intervalo === 'anual') {
+      q = 'SELECT YEAR(fechaEmision) AS intervalo, SUM(costoTotal) AS egresos, SUM(ingresoTotal) AS ingresos FROM facturasRegistradas INNER JOIN ingresos ON YEAR(fechaEmision) = YEAR(semana) GROUP BY YEAR(fechaEmision)';
+    } else if (intervalo === 'mensual') {
+      q = 'SELECT CONCAT(MONTH(fechaEmision), "/", YEAR(fechaEmision)) AS intervalo, SUM(costoTotal) AS egresos, SUM(ingresoTotal) AS ingresos FROM facturasRegistradas INNER JOIN ingresos ON MONTH(fechaEmision) = MONTH(semana) AND YEAR(fechaEmision) = YEAR(semana) GROUP BY MONTH(fechaEmision), YEAR(fechaEmision)';
+    } else if (intervalo === 'semanal') {
+      q = 'SELECT CONCAT(WEEK(fechaEmision), "/", YEAR(fechaEmision)) AS intervalo, SUM(costoTotal) AS egresos, SUM(ingresoTotal) AS ingresos FROM facturasRegistradas INNER JOIN ingresos ON WEEK(fechaEmision) = WEEK(semana) AND YEAR(fechaEmision) = YEAR(semana) GROUP BY WEEK(fechaEmision), YEAR(fechaEmision)';
+    } else {
+      return res.status(400).json({ error: 'Intervalo no válido' });
+    }
+    db.query(q, (err, data) => {
+      if (err) return res.status(500).json({ error: 'Error en la consulta' });
+      return res.json(data);
+    });
+  });
   
-
+  app.listen(3000, () => {
+    console.log('Servidor escuchando en el puerto 3000');
+  });
 
   app.put('/proveedor/:id', (req, res) => {
     const id = req.params.id;
@@ -79,6 +98,39 @@ app.get('/proveedor', (req, res) => {
         console.log(results)
     });
 });
+
+app.post('/proveedor/creacion', (req, res) => {
+    const { nombre, cuit, telefono, email, nota } = req.body;
+  
+    const q = 'INSERT INTO proveedor SET id = NULL, nombre = ?, cuit = ?, telefono = ?, email = ?, nota = ?';
+    db.query(q, [nombre, cuit, telefono, email, nota], (err, results) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error al procesar la solicitud' });
+      } else {
+        console.log(results);
+        res.status(200).json({ message: 'Proveedor creado exitosamente', data: results });
+      }
+    });
+  });
+
+  app.delete('/proveedor/eliminar/:id', (req, res) => {
+    const id = req.params.id;
+    console.log(id);
+
+    const q = 'DELETE FROM `proveedor` WHERE `proveedor`.`id` = ?';
+    db.query(q, [id], (err, results) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error al procesar la solicitud' });
+      } else {
+        console.log(results);
+        res.status(200).json({ message: 'Proveedor creado exitosamente', data: results });
+      }
+    });
+  });
+  
+  
 
 app.listen(8800, ()=>{
   console.log("Connected to backend!");

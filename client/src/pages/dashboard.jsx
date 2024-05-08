@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/navbar';
+import axios from 'axios';
+
 
 function Dashboard() {
+  const [intervaloSelector, setIntervaloSelector] = useState('mensual');
   const [intervalos, setIntervalos] = useState([]);
   const [facturasNoa, setFacturasNoa] = useState([]);
   const [seleccionadoIntervalo, setSeleccionadoIntervalo] = useState(null);
@@ -11,36 +14,49 @@ function Dashboard() {
   const [egresoAnterior, setEgresoAnterior] = useState(0);
   const [ingresoAnterior, setIngresoAnterior] = useState(0);
 
+  // const handleIntervaloClick = (intervalo, egresos, ingresos) => {
+  //   setSeleccionadoIntervalo(intervalo);
+  //   // Aquí puedes agregar cualquier lógica adicional que necesites al seleccionar un intervalo
+  // };
+
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8800/intervalos?intervalo=${intervaloSelector}`);
+      setIntervalos(response.data);
+    } catch (error) {
+      console.error('Error al obtener datos:', error);
+    }
+  };
   useEffect(() => {
-    // Simulación de datos del backend
-    const datosDelBackend = [
-      { intervalo: "12/4", egresos: 50000, ingresos: 230000 },
-      { intervalo: "13/4", egresos: 30000, ingresos: 330000 },
-      { intervalo: "14/4", egresos: 45000, ingresos: 400000 },
-      { intervalo: "15/4", egresos: 30000, ingresos: 200000 },
-      { intervalo: "16/4", egresos: 55555, ingresos: 440000 },
-      { intervalo: "17/4", egresos: 52000, ingresos: 80000 }
-    ];
+
+    fetchData();
+    
     const facturasNoa = [
       { id: 344, costo: 99399999, dias: 0},
       { id: 344, costo: 9999999, dias: 14},
       { id: 344, costo: 9999999, dias: 14},
       { id: 344, costo: 9999999, dias: 14},
     ];
-    setIntervalos(datosDelBackend);
     setFacturasNoa(facturasNoa);
-    calcularMaximaGanancia(datosDelBackend);
-    const ultimoIntervalo = datosDelBackend[datosDelBackend.length - 1];
+    calcularMaximaGanancia(intervalos);
+    const ultimoIntervalo = intervalos[(intervalos.length - 1)];
+    console.log(ultimoIntervalo)
     setSeleccionadoIntervalo(ultimoIntervalo.intervalo);
     setEgresoSeleccionado(ultimoIntervalo.egresos);
     setIngresoSeleccionado(ultimoIntervalo.ingresos);
     // Establecer el intervalo anterior
-    const intervaloAnterior = datosDelBackend[datosDelBackend.length - 2];
+    const intervaloAnterior = intervalos[(intervalos.length - 2)];
     if (intervaloAnterior) {
       setEgresoAnterior(intervaloAnterior.egresos);
       setIngresoAnterior(intervaloAnterior.ingresos);
     }
-  }, []);
+
+  }, [intervaloSelector]);
+
+
+
+
 
   // Calcular la máxima ganancia
   const calcularMaximaGanancia = (datos) => {
@@ -85,11 +101,15 @@ function Dashboard() {
         <div className="tituloprinc">
           <h1>Analisis de transacciones</h1>
           <div className="botones">
-            <select className="selector selectorIntervalo">
-              <option>Anual</option>
-              <option selected>Mensual</option>
-              <option>Semanal</option>
-            </select>
+          <select
+            className="selector selectorIntervalo"
+            value={intervaloSelector}
+            onChange={(e) => setIntervaloSelector(e.target.value)}
+            >
+            <option value="anual">Anual</option>
+            <option value="mensual">Mensual</option>
+            <option value="semanal">Semanal</option>
+          </select>
             <button className="reiniciar">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
