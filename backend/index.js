@@ -62,6 +62,15 @@ app.get('/proveedor', (req, res) => {
       return res.json(data)
     });
   });
+
+  app.get('/facturas', (req, res) => {
+    const q = 'SELECT * FROM facturasregistradas';
+    db.query(q, (err, data) => {
+      if (err) return res.json(err);
+      return res.json(data)
+    });
+  });
+
   app.get('/intervalos', (req, res) => {
     const intervalo = req.query.intervalo; // Obtener el intervalo seleccionado desde la query
     let q;
@@ -80,9 +89,9 @@ app.get('/proveedor', (req, res) => {
     });
   });
   
-  app.listen(3000, () => {
-    console.log('Servidor escuchando en el puerto 3000');
-  });
+  // app.listen(3000, () => {
+  //   console.log('Servidor escuchando en el puerto 3000');
+  // });
 
   app.put('/proveedor/:id', (req, res) => {
     const id = req.params.id;
