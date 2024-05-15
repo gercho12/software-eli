@@ -549,7 +549,7 @@
             border-top-right-radius: 20px;
         }
         .dashboard .grid .left .bottom .grafico .intervaloUnidad .velas .velaGanancia.seleccionado{
-            background-color: rgba(0, 0, 0, 0.06);
+            background-color: #3b3b3b;
             border-top: 2px rgba(0, 0, 0, 0.2) dashed;
             border-inline: 2px rgba(0, 0, 0, 0.2) dashed;
 
@@ -997,7 +997,7 @@
             height: 100vh;
             overflow-x: auto;
             width: 100%;
-            flex-wrap: wrap;
+            /* flex-wrap: wrap; */
 
         }
         .facturas .bottom{

@@ -64,28 +64,55 @@ app.get('/proveedor', (req, res) => {
   });
 
   app.get('/facturas', (req, res) => {
-    const q = 'SELECT * FROM facturasregistradas';
+
+       const q = 'SELECT * FROM facturasregistradas';
+
     db.query(q, (err, data) => {
       if (err) return res.json(err);
       return res.json(data)
     });
   });
+  app.get('/facturas/:ano', (req, res) => {
 
-  app.get('/intervalos', (req, res) => {
-    const intervalo = req.query.intervalo; // Obtener el intervalo seleccionado desde la query
-    let q;
-    if (intervalo === 'anual') {
-      q = 'SELECT YEAR(fechaEmision) AS intervalo, SUM(costoTotal) AS egresos, SUM(ingresoTotal) AS ingresos FROM facturasRegistradas INNER JOIN ingresos ON YEAR(fechaEmision) = YEAR(semana) GROUP BY YEAR(fechaEmision)';
-    } else if (intervalo === 'mensual') {
-      q = 'SELECT CONCAT(MONTH(fechaEmision), "/", YEAR(fechaEmision)) AS intervalo, SUM(costoTotal) AS egresos, SUM(ingresoTotal) AS ingresos FROM facturasRegistradas INNER JOIN ingresos ON MONTH(fechaEmision) = MONTH(semana) AND YEAR(fechaEmision) = YEAR(semana) GROUP BY MONTH(fechaEmision), YEAR(fechaEmision)';
-    } else if (intervalo === 'semanal') {
-      q = 'SELECT CONCAT(WEEK(fechaEmision), "/", YEAR(fechaEmision)) AS intervalo, SUM(costoTotal) AS egresos, SUM(ingresoTotal) AS ingresos FROM facturasRegistradas INNER JOIN ingresos ON WEEK(fechaEmision) = WEEK(semana) AND YEAR(fechaEmision) = YEAR(semana) GROUP BY WEEK(fechaEmision), YEAR(fechaEmision)';
-    } else {
-      return res.status(400).json({ error: 'Intervalo no válido' });
-    }
+    const ano = req.params.ano;
+    const q = `SELECT MONTH(fechaEmision) as mes, 
+    SUM(costoTotal) as egresos,
+    SUM(iva) as ivaTotal
+FROM facturasregistradas 
+WHERE YEAR(fechaEmision) = ${ano} 
+GROUP BY MONTH(fechaEmision)`;
     db.query(q, (err, data) => {
-      if (err) return res.status(500).json({ error: 'Error en la consulta' });
-      return res.json(data);
+      if (err) return res.json(err);
+
+      return res.json(data)
+
+    });
+  });
+
+  // app.get('/intervalos', (req, res) => {
+  //   const intervalo = req.query.intervalo; // Obtener el intervalo seleccionado desde la query
+  //   let q;
+  //   if (intervalo === 'anual') {
+  //     q = 'SELECT YEAR(fechaEmision) AS intervalo, SUM(costoTotal) AS egresos, SUM(ingresoTotal) AS ingresos FROM facturasRegistradas INNER JOIN ingresos ON YEAR(fechaEmision) = YEAR(semana) GROUP BY YEAR(fechaEmision)';
+  //   } else if (intervalo === 'mensual') {
+  //     q = 'SELECT CONCAT(MONTH(fechaEmision), "/", YEAR(fechaEmision)) AS intervalo, SUM(costoTotal) AS egresos, SUM(ingresoTotal) AS ingresos FROM facturasRegistradas INNER JOIN ingresos ON MONTH(fechaEmision) = MONTH(semana) AND YEAR(fechaEmision) = YEAR(semana) GROUP BY MONTH(fechaEmision), YEAR(fechaEmision)';
+  //   } else if (intervalo === 'semanal') {
+  //     q = 'SELECT CONCAT(WEEK(fechaEmision), "/", YEAR(fechaEmision)) AS intervalo, SUM(costoTotal) AS egresos, SUM(ingresoTotal) AS ingresos FROM facturasRegistradas INNER JOIN ingresos ON WEEK(fechaEmision) = WEEK(semana) AND YEAR(fechaEmision) = YEAR(semana) GROUP BY WEEK(fechaEmision), YEAR(fechaEmision)';
+  //   } else {
+  //     return res.status(400).json({ error: 'Intervalo no válido' });
+  //   }
+  //   db.query(q, (err, data) => {
+  //     if (err) return res.status(500).json({ error: 'Error en la consulta' });
+  //     return res.json(data);
+  //   });
+  // });
+
+  app.get('/anos', (req, res) => {
+    const q = 'SELECT DISTINCT YEAR(fechaEmision) as año FROM facturasregistradas';
+    db.query(q, (err, data) => {
+      if (err) return res.json(err);
+      const anos = data.map(item => item.año);
+      return res.json(anos);
     });
   });
   
