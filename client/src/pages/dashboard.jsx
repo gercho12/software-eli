@@ -20,6 +20,24 @@ function Dashboard() {
   //   setSeleccionadoIntervalo(intervalo);
   //   // Aquí puedes agregar cualquier lógica adicional que necesites al seleccionar un intervalo
   // };
+  useEffect(() => {
+    const fetchFacturasNoa = async () => {
+      try {
+        const response = await axios.get('http://localhost:8800/facturasNoAbonadas');
+        if (!Array.isArray(response.data) || response.data.length === 0) {
+          setFacturasNoa(null);
+        } else {
+          setFacturasNoa(response.data);
+        }
+      } catch (error) {
+        console.error('Error al obtener los años:', error);
+      }
+    };
+  
+    fetchFacturasNoa();
+  }, []);
+
+  console.log(facturasNoa);
 
   useEffect(() => {
     const fetchAños = async () => {
@@ -183,9 +201,11 @@ function Dashboard() {
             </div>
           </div>
           <div className="right">
-                <h2 className='tituloRight'>Facturas no abonadas <span className="cantFacturasNoa">6</span></h2>
+            {/* {console.log(facturasNoa.length)} */}
+                <h2 className='tituloRight'>Facturas no abonadas <span className="cantFacturasNoa">{!facturasNoa ? "0" : facturasNoa.length}</span></h2>
                 <div className="facturasNoa">
-                  {facturasNoa.map(({id, costo, dias}) => {
+                  {facturasNoa ?
+                   (facturasNoa.map(({id, costo, dias}) => {
                     return(
                       <div className="facturaNoa">
                       <div className="abonado boton">
@@ -203,7 +223,9 @@ function Dashboard() {
                       </div>
                     </div>
                     );
-                  })}
+                  }))
+                  : ("todas las facturas fueron abonadas")
+                  }
                 </div>
             </div>
         </div>

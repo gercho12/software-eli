@@ -72,6 +72,20 @@ app.get('/proveedor', (req, res) => {
       return res.json(data)
     });
   });
+  app.get('/facturasNoAbonadas', (req, res) => {
+    const currentDate = new Date().toLocaleDateString('es-AR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  
+    const q = `
+      SELECT * FROM facturasregistradas
+      WHERE estadoAbonado = 0
+      AND DATEDIFF(CURDATE(), fechaVencimiento) <= 3
+    `;
+  
+    db.query(q, [currentDate], (err, data) => {
+      if (err) return res.json(err);
+      return res.json(data);
+    });
+  });
   app.get('/facturas/:ano', (req, res) => {
 
     const ano = req.params.ano;
@@ -88,6 +102,7 @@ GROUP BY MONTH(fechaEmision)`;
 
     });
   });
+
 
   // app.get('/intervalos', (req, res) => {
   //   const intervalo = req.query.intervalo; // Obtener el intervalo seleccionado desde la query
