@@ -76,9 +76,11 @@ app.get('/proveedor', (req, res) => {
     const currentDate = new Date().toLocaleDateString('es-AR', { year: 'numeric', month: '2-digit', day: '2-digit' });
   
     const q = `
-      SELECT * FROM facturasregistradas
-      WHERE estadoAbonado = 0
-      AND DATEDIFF(CURDATE(), fechaVencimiento) <= 3
+    SELECT *
+    FROM facturasregistradas
+    WHERE fechaVencimiento - CURDATE() < 10;
+    
+    
     `;
   
     db.query(q, [currentDate], (err, data) => {

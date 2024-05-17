@@ -27,7 +27,19 @@ function Dashboard() {
         if (!Array.isArray(response.data) || response.data.length === 0) {
           setFacturasNoa(null);
         } else {
-          setFacturasNoa(response.data);
+          const facturasConDiferencia = response.data.map(factura => {
+            const fechaVencimiento = new Date(factura.fechaVencimiento);
+            const fechaActual = new Date();
+            const diferenciaMilisegundos = fechaVencimiento - fechaActual;
+            const diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+  
+            // Agrega la propiedad "diferenciaDias" al objeto de la factura
+            return { ...factura, diferenciaDias };
+          });
+  
+          setFacturasNoa(facturasConDiferencia);
+          console.log(facturasConDiferencia)
+
         }
       } catch (error) {
         console.error('Error al obtener los años:', error);
@@ -205,7 +217,7 @@ function Dashboard() {
                 <h2 className='tituloRight'>Facturas no abonadas <span className="cantFacturasNoa">{!facturasNoa ? "0" : facturasNoa.length}</span></h2>
                 <div className="facturasNoa">
                   {facturasNoa ?
-                   (facturasNoa.map(({id, costo, dias}) => {
+                   (facturasNoa.map(({id, costo, diferenciaDias}) => {
                     return(
                       <div className="facturaNoa">
                       <div className="abonado boton">
@@ -215,7 +227,7 @@ function Dashboard() {
                       </div>
                       <h3>#{id}</h3>
                       <h2>{costo} </h2>
-                      <h2>{dias >= 2 ? (dias+" dias") : dias === 1 ? (dias+" dia") : ("vencido")} </h2>
+                      <h2>{diferenciaDias >= 2 ? (diferenciaDias+" dias") : diferenciaDias === 1 ? (diferenciaDias+" dia") : ("vencido")} </h2>
                       <div className="masInfo boton">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
