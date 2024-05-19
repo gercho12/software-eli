@@ -9,7 +9,7 @@ const Proveedores = () => {
   const [proveedorEditado, setProveedorEditado] = useState(seleccionadoProveedor);
   const [nuevoProveedor, setNuevoProveedor] = useState({
     nombre: "",
-    cuit: "",
+    cuit: 99999999999,
     telefono: "",
     email: "",
     nota: "",
@@ -217,7 +217,7 @@ const Proveedores = () => {
             <h2>Información legal</h2>
             <h3>CUIT: 
               <input 
-                type='text' 
+                type='number' 
                 onChange={(event) => setNuevoProveedor({...nuevoProveedor, cuit: event.target.value})} 
                 onKeyDown={(event)=>handleKeyDown(event)}
               />

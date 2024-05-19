@@ -54,9 +54,11 @@ async function run() {
         "subtotal": 30200.84,
         "impuestos": {
           "IVA": 1120,
-          "totalImpuestos": 2000
+          "percepcionIVA": 650,
+          "ingresosBrutos_IIBB": 6120,
+          "percepcionIngresosBrutos_IIBB": 250,
         },
-        "total": 32200.84
+        "total": 38340.84
       }
       
     
@@ -157,7 +159,7 @@ async function run() {
     },
   });
 
-  const imagenUsuario = fileToGenerativePart("imagenUsuario.jpg", "image/jpg")
+  const imagenUsuario = fileToGenerativePart("imagenUsuario2.jpeg", "image/jpeg")
 
   const history = await chat.getHistory();
   const msgContent = { role: "user", parts: [{ text: "modo ultra-detallado" }, imagenUsuario] };

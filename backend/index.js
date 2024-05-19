@@ -72,6 +72,18 @@ app.get('/proveedor', (req, res) => {
       return res.json(data)
     });
   });
+
+  app.put('/actualizarFactura/:id/:estadoAbonado', async (req, res) => {
+    const { id, estadoAbonado } = req.params;
+  
+    const q = 'UPDATE facturasregistradas SET estadoAbonado =? WHERE id =?';
+    db.query(q, [estadoAbonado, id], (err, results) => {
+        if (err) throw err;
+        res.send(results);
+        console.log(results)
+    });
+});
+
   app.get('/facturasNoAbonadas', (req, res) => {
     const currentDate = new Date().toLocaleDateString('es-AR', { year: 'numeric', month: '2-digit', day: '2-digit' });
   
@@ -97,6 +109,20 @@ app.get('/proveedor', (req, res) => {
 FROM facturasregistradas 
 WHERE YEAR(fechaEmision) = ${ano} 
 GROUP BY MONTH(fechaEmision)`;
+    db.query(q, (err, data) => {
+      if (err) return res.json(err);
+
+      return res.json(data)
+
+    });
+  });
+
+  app.get('/items/:idFactura', (req, res) => {
+
+    const idFactura = req.params.idFactura;
+    const q = `SELECT *
+FROM detallesfacturas 
+WHERE id_factura = ${idFactura}`;
     db.query(q, (err, data) => {
       if (err) return res.json(err);
 

@@ -15,6 +15,8 @@ function Dashboard() {
   const [IvaSeleccionado, setIvaSeleccionado] = useState(0);
   const [egresoAnterior, setEgresoAnterior] = useState(0);
   const [ivaAnterior, setIvaAnterior] = useState(0);
+  const [porcentajeIva, setPorcentajeIva] = useState(0);
+  const [porcentajeEgresos, setPorcentajeEgresos] = useState(0);
 
   // const handleIntervaloClick = (intervalo, egresos, ingresos) => {
   //   setSeleccionadoIntervalo(intervalo);
@@ -38,6 +40,7 @@ function Dashboard() {
           });
   
           setFacturasNoa(facturasConDiferencia);
+          
           console.log(facturasConDiferencia)
 
         }
@@ -75,9 +78,11 @@ function Dashboard() {
           // setEgresoSeleccionado(facturas[facturas.length - 1].egresos);
           // setIvaSeleccionado(facturas[facturas.length - 1].ivaTotal);
           handleIntervaloClick(facturas[facturas.length - 1].mes, facturas[facturas.length - 1].egresos, facturas[facturas.length - 1].ivaTotal)
+
         }
         setIntervalos(facturas);
         calcularMaximoEgreso(facturas)
+        
       } catch (error) {
         console.error('Error al obtener las facturas:', error);
       }
@@ -106,7 +111,14 @@ function Dashboard() {
       const previousInterval = intervalos[currentIndex - 1];
       setEgresoAnterior(previousInterval.egresos);
       setIvaAnterior(previousInterval.ivaTotal);
+      console.log(egresos, ivaTotal)
+      setPorcentajeEgresos(calcularPorcentaje(egresos, previousInterval.egresos))
+      setPorcentajeIva(calcularPorcentaje(ivaTotal, previousInterval.ivaTotal))
+    }else{
+      console.log(currentIndex)
     }
+ 
+    console.log(egresoSeleccionado, egresoAnterior)
   };
   // Calcular la ganancia total
   const calcularGananciaTotal = () => {
@@ -162,16 +174,16 @@ function Dashboard() {
             <div className="targetas">
               <div className="egresos targeta">
                 <div className="linkerInner">
-                  <div className="linker">
+                  <a className="linker" href='/facturas'>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-6 h-6">
                       <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
                     </svg>
-                  </div>
+                  </a>
                 </div>
                 <h3 className="titulo">Egreso total</h3>
                 <div className="abajo">
                   <h2 className="numero">${egresoSeleccionado}</h2>
-                  <h3 className="subtitulo">Mes pasado <span className='procentaje'>{calcularPorcentaje(egresoSeleccionado, egresoAnterior)}%</span></h3>
+                  <h3 className="subtitulo">Mes pasado <span className='procentaje' id='porcentajeEgreso'>{porcentajeEgresos}%</span></h3>
                 </div>
               </div>
               <div className="ingresos targeta">
@@ -185,7 +197,7 @@ function Dashboard() {
                 <h3 className="titulo">IVA cobrado</h3>
                 <div className="abajo">
                   <h2 className="numero">${IvaSeleccionado}</h2>
-                  <h3 className="subtitulo">Mes pasado <span className='procentaje'>{calcularPorcentaje(IvaSeleccionado, ivaAnterior)}%</span></h3>
+                  <h3 className="subtitulo">Mes pasado <span className='procentaje' id='porcentajeIva'>{porcentajeIva}%</span></h3>
                 </div>
               </div>
             </div>

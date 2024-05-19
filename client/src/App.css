@@ -1022,12 +1022,18 @@
         }
         
         .facturas .bottom .top select{
-            width: 215px;
+            flex: 1;
+            min-width: 215px;
         }
         .facturas .bottom .top button{
             width: fit-content;
         }
-        
+        .facturas .bottom .top button p.mas{
+            display: none;
+        }
+        .facturas .bottom .top button p.texto{
+            display: flex;
+        }
         .facturas .bottom .listaFacturas{
             display: flex;
             flex-direction: column;
@@ -1037,10 +1043,14 @@
             width: 100%;
             background-color: rgba(0, 0, 0, 0.04);
             padding-inline: 13px;
+            padding-right: 30px;
             padding-block: 10px;
             border-radius: 15px;
             height: fit-content;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
 
@@ -1066,7 +1076,7 @@
         .facturas .bottom .listaFacturas .factura .topFactura.selected h3{
             display: flex;
             flex-direction: column;
-            gap:    px;
+            gap:5px;
             background-color: transparent;
             padding: 0;
             margin-right: 10px;
@@ -1076,16 +1086,19 @@
             font-size: 16px;
             background-color: rgba(0, 0, 0, 0.04);
             border-radius: 15px;
+            flex-wrap: wrap;
             padding-block:3px;
             padding-inline:8px;
             font-weight: 300;
         }
+
         .facturas .bottom .listaFacturas .factura .topFactura h3.datoAbonado span{
             background-color: #EE3131;
             font-size: 15px;
             padding-inline:8px;
             border-radius: 20px;
             color: #FFF;
+            z-index:99999;
         }
         .facturas .bottom .listaFacturas .factura .topFactura h3.datoAbonado span.abonado{
             background-color: #60AE31;
@@ -1131,4 +1144,108 @@
 
             font-size: 14px;
 
+        }
+        @media (max-width:1024px) {
+            .facturas .bottom .top{
+                flex-wrap: wrap;
+            }
+            .facturas .bottom .top input{
+                min-width: 260px;
+                height: 50px;
+            }
+
+            .facturas .bottom .top button{
+            flex: 1;
+            min-width: 220px;
+            }
+
+            .facturas .bottom .listaFacturas .factura .topFactura .data{
+                padding-right: 35px;
+            }
+
+            .facturas .bottom .listaFacturas .factura .topFactura .data{
+                flex-wrap: wrap;
+
+            }
+            .facturas .bottom .listaFacturas .factura .topFactura {
+                flex-wrap: wrap;
+            }
+            .facturas .bottom .listaFacturas .factura .topFactura .estadoAbonado{
+                width: 45px;
+                height: 45px;
+            }
+
+        }  
+
+        @media (max-width:425px) {
+            .facturas .bottom .listaFacturas .factura .topFactura .data{
+                padding-right: 0px;
+                padding-bottom: 50px;
+            }
+            .facturas .bottom .top input{
+                flex: 1;
+                min-width: 100%;
+            }
+            .facturas .bottom .listaFacturas .factura .topFactura .estadoAbonado{
+                width: calc(100% - 20px);
+                height: 35px;
+                bottom: 13px;
+                border-radius: 12px;
+
+            }
+            .facturas .bottom .top button p.mas{
+                display: flex;
+
+            }
+            .facturas .bottom .top button p.texto{
+                display: none;
+
+            }
+            .facturas .bottom .top button{
+                flex: 1;
+                min-width: 50px;
+                max-width: 50px;
+                }
+                .facturas .bottom .top select{
+                 min-width: 0;
+                }
+
+
+        }
+
+              .facturas .bottom .listaFacturas .factura .facturaItems{
+            width: 100%;
+            flex-direction: column;
+            display: none;
+            gap: 10px;
+        }
+        .facturas .bottom .listaFacturas .factura .facturaItems .item{
+            width: 100%;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            border-radius: 16px;
+            border: 1.9px solid #6d6d6d;
+            gap: 10px;
+            padding-inline: 10px;
+        }
+        .facturas .bottom .listaFacturas .factura .facturaItems h3{
+            font-size: 16px;
+            border-radius: 15px;
+            padding-block:3px;
+            padding-inline:8px;
+            font-weight: 300;
+            display: flex;
+            flex-direction: column;
+        }
+        .facturas .bottom .listaFacturas .factura .facturaItems span{
+            font-weight: 500;
+        }
+        .facturas .bottom .listaFacturas .factura .facturaItems h2{
+            font-weight: 400;
+            font-size: 18px;
+        }
+
+        .facturas .bottom .listaFacturas .factura .facturaItems.selected{
+            display: flex;
         }
