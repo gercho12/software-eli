@@ -136,7 +136,40 @@ function Dashboard() {
       });
       setMaximoEgreso(maxima);
     };
-
+    const guardarEstadoAbonado = async (id, estadoAbonadoAntiguo, event) => {
+      event.stopPropagation();
+      console.log(estadoAbonadoAntiguo);
+      const estadoAbonado = estadoAbonadoAntiguo === 0 ? 1 : 0;
+      console.log(estadoAbonado);
+      try {
+        await axios.put(`http://localhost:8800/actualizarFactura/${id}/${estadoAbonado}`);
+        try {
+          const response = await axios.get('http://localhost:8800/facturasNoAbonadas');
+          if (!Array.isArray(response.data) || response.data.length === 0) {
+            setFacturasNoa(null);
+          } else {
+            const facturasConDiferencia = response.data.map(factura => {
+              const fechaVencimiento = new Date(factura.fechaVencimiento);
+              const fechaActual = new Date();
+              const diferenciaMilisegundos = fechaVencimiento - fechaActual;
+              const diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+    
+              // Agrega la propiedad "diferenciaDias" al objeto de la factura
+              return { ...factura, diferenciaDias };
+            });
+    
+            setFacturasNoa(facturasConDiferencia);
+            
+            console.log(facturasConDiferencia)
+  
+          }
+        } catch (error) {
+          console.error('Error al obtener los años:', error);
+        }
+      } catch (error) {
+        console.log(error.response.data);
+      }
+    }
   return (
     <div className="app">
       <Navbar />
@@ -232,7 +265,7 @@ function Dashboard() {
                    (facturasNoa.map(({id, costo, diferenciaDias}) => {
                     return(
                       <div className="facturaNoa">
-                      <div className="abonado boton">
+                      <div className="abonado boton" onClick={(e)=> guardarEstadoAbonado(id, 0, e)}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                           <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                         </svg>

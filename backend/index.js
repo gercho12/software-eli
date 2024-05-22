@@ -89,8 +89,8 @@ app.get('/proveedor', (req, res) => {
   
     const q = `
     SELECT *
-    FROM facturasregistradas
-    WHERE fechaVencimiento - CURDATE() < 10;
+    FROM facturasregistradas 
+    WHERE estadoAbonado = 0 AND fechaVencimiento - CURDATE() < 10;
     
     
     `;
@@ -163,15 +163,14 @@ WHERE id_factura = ${idFactura}`;
   //   console.log('Servidor escuchando en el puerto 3000');
   // });
 
-  app.put('/proveedor/:id', (req, res) => {
-    const id = req.params.id;
+  app.put('/proveedor/:cuit', (req, res) => {
+    const cuit = req.params.cuit;
     const nombre = req.body.nombre;
-    const cuit = req.body.cuit;
     const telefono = req.body.telefono;
     const email = req.body.email;
     const nota = req.body.nota;
-    const q = 'UPDATE proveedor SET nombre =?, cuit =?, telefono =?, email =?, nota =? WHERE id =?';
-    db.query(q, [nombre, cuit, telefono, email, nota, id], (err, results) => {
+    const q = 'UPDATE proveedor SET nombre =?, cuit =?, telefono =?, email =?, nota =? WHERE cuit =?';
+    db.query(q, [nombre, cuit, telefono, email, nota, cuit], (err, results) => {
         if (err) throw err;
         res.send(results);
         console.log(results)
@@ -181,7 +180,7 @@ WHERE id_factura = ${idFactura}`;
 app.post('/proveedor/creacion', (req, res) => {
     const { nombre, cuit, telefono, email, nota } = req.body;
   
-    const q = 'INSERT INTO proveedor SET id = NULL, nombre = ?, cuit = ?, telefono = ?, email = ?, nota = ?';
+    const q = 'INSERT INTO proveedor SET nombre = ?, cuit = ?, telefono = ?, email = ?, nota = ?';
     db.query(q, [nombre, cuit, telefono, email, nota], (err, results) => {
       if (err) {
         console.error(err);
@@ -193,12 +192,12 @@ app.post('/proveedor/creacion', (req, res) => {
     });
   });
 
-  app.delete('/proveedor/eliminar/:id', (req, res) => {
+  app.delete('/proveedor/eliminar/:cuit', (req, res) => {
     const id = req.params.id;
-    console.log(id);
+    console.log(cuit);
 
-    const q = 'DELETE FROM `proveedor` WHERE `proveedor`.`id` = ?';
-    db.query(q, [id], (err, results) => {
+    const q = 'DELETE FROM `proveedor` WHERE `proveedor`.`cuit` = ?';
+    db.query(q, [cuit], (err, results) => {
       if (err) {
         console.error(err);
         res.status(500).json({ error: 'Error al procesar la solicitud' });
@@ -211,6 +210,6 @@ app.post('/proveedor/creacion', (req, res) => {
   
   
 
-app.listen(8800, ()=>{
+app.listen(8800, '0.0.0.0', ()=>{
   console.log("Connected to backend!");
   })

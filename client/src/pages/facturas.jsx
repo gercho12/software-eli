@@ -10,6 +10,21 @@ const Facturas = () => {
   const [busqueda, setBusqueda] = useState("");
   const [orden, setOrden] = useState("masReciente");
 
+  // const Facturelejida = () => {
+  //   const { id } = useParams();
+  
+  //   useEffect(() => {
+  //     // Función que se debe ejecutar con el parámetro id
+  //     const fetchFactura = async (id) => {
+  //       // Lógica para obtener la factura con el id proporcionado
+  //       console.log(`Fetching factura con ID: ${id}`);
+  //       // Aquí podrías hacer una llamada a una API para obtener los datos de la factura
+  //     };
+  
+  //     fetchFactura(id);
+  //   }, [id]);
+  // }
+
   useEffect(() => {
     const fetchData = async () => {
       try {

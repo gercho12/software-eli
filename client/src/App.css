@@ -1023,6 +1023,7 @@
         
         .facturas .bottom .top select{
             flex: 1;
+            max-width: 215px;
             min-width: 215px;
         }
         .facturas .bottom .top button{
@@ -1115,7 +1116,7 @@
 
         .facturas .bottom .listaFacturas .factura .topFactura .estadoAbonado{
             border-radius: 25px;
-            width: 13px;
+            width: 15px;
             height: calc(100% - 26px);
             background-color: #EE3131;
             position: absolute;
@@ -1208,6 +1209,7 @@
                 }
                 .facturas .bottom .top select{
                  min-width: 0;
+                 max-width: none;
                 }
 
 
