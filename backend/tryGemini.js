@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
+import axios from 'axios';
 import fs from "fs";
 dotenv.config();
 
@@ -103,7 +104,7 @@ async function run() {
     siendo; la "descripcion" el nombre de la unidad sin los datos del volumen ni la cantidad de unidades, la "medicionVolumen" unicamente en Kilogramos o Litros adaptando los gramos o mililitros a un numero decimal (850gr => 0.850) si no se indica no colocar, la "cantUnidades" el numero de unidades en un bulto insinuando asi que viene en forma de paquete o caja si no se indica colocar 1 y el "precioUnidad el precio del del bulto dividido la cantidad de unidades.
     
     Recuerda que tu objetivo es procesar cualquier tipo de factura, desde facturas de compra hasta recibos de alquiler o de energia (en esos casos siendo la "descripcion" y el "importe" los unicos valores utilizados), y devolver los datos de manera precisa y estructurada según las necesidades del cliente. EN EL CASO DE LA FALTA DE UN DATO DARLE UN VALOR NULL (nulo). En la descripción no incluir mas que el nombre del item. Las fechas deben estar en formato "dd-mm-aaaa" (dia-mes-año)
-    En caso de no encontrar los impuestos detallados en la estructura, colocar null y colocar la suma de los impuestos desconocidos en "otrosImpuestos".
+    En caso de no encontrar los impuestos detallados en la estructura, colocar null y colocar la suma de los impuestos desconocidos en "otrosImpuestos". No debes incluir ningun otro caracter fuera del JSON nada de backticks 
     `
 
     const safetySettings = [
@@ -125,17 +126,17 @@ async function run() {
         },
       ]
       
-      const generationConfig = {
-        stopSequences: ["red"],
-        maxOutputTokens: 200,
-        temperature: 0.9,
-        topP: 0.1,
-        topK: 16,
-      };
+     const generationConfig = {
+        "temperature": 0.9,
+        "top_p": 0.95,
+        "top_k": 64,
+        "max_output_tokens": 8192,
+        "response_mime_type": "application/json",
+      }
       
       try {
   // For text-and-image input (multimodal), use the gemini-pro-vision model
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest", safetySettings, systemInstruction });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest", safetySettings, systemInstruction, generationConfig  });
 
   const factura1 = fileToGenerativePart("facturasEntrenamiento/factura1.jpg", "image/jpg")
   const factura2 = fileToGenerativePart("facturasEntrenamiento/factura2.jpg", "image/jpg")
@@ -169,7 +170,7 @@ async function run() {
       },
       {
         role: "model",
-        parts: [{ text: `{    "numeroFactura": "1 62114",    "tipoFactura": "Presupuesto",    "fechaEmision": "25-03-2024",    "fechaVencimiento": null,    "emisor": {      "nombre": null,      "direccion": null,      "telefono": null,      "email": null,      "CUIT": null    },    "receptor": {      "nombre": "CREANDO PAN S.A",      "direccion": "MIGUEL ANGEL 5495 VILLA BOSCH Buenos Aires",      "telefono": null,      "email": null,      "CUIT": "30-71602726-7"    },    "items": [      {        "codigo": null,        "descripcion": "MANI CROCANTE C/CHOC SIMOAR",        "volumenUnidad": 5,        "medicionVolumen": "Kilogramos",        "cantUnidadesBulto": 1,        "precioBulto": 25375.00,        "precioUnidad": 25375.00,        "cantBultosItem": 2,        "bonificacion": 0,        "importeItem": 50750.00      },      {        "codigo": null,        "descripcion": "MAYONESA DANICA",        "volumenUnidad": 2.9,        "medicionVolumen": "Litros",        "cantUnidadesBulto": 1,        "precioBulto": 5978.00,        "precioUnidad": 5978.00,        "cantBultosItem": 8,        "bonificacion": 0,        "importeItem": 47824.00      },      {        "codigo": null,        "descripcion": "CEREZAS ROJAS ENT.CERESKINAS BALDE",        "volumenUnidad": 3.1,        "medicionVolumen": "Kilogramos",        "cantUnidadesBulto": 1,        "precioBulto": 27360.00,        "precioUnidad": 27360.00,        "cantBultosItem": 4,        "bonificacion": 0,        "importeItem": 109440.00      },      {        "codigo": null,        "descripcion": "HIGOS BALDE NATURALES CERESKINAS",        "volumenUnidad": 3.1,        "medicionVolumen": "Kilogramos",        "cantUnidadesBulto": 1,        "precioBulto": 15090.00,        "precioUnidad": 15090.00,        "cantBultosItem": 2,        "bonificacion": 0,        "importeItem": 30180.00      },      {        "codigo": null,        "descripcion": "MIEL DON CARLOS",        "volumenUnidad": 5,        "medicionVolumen": "Kilogramos",        "cantUnidadesBulto": 1,        "precioBulto": 12375.00,        "precioUnidad": 12375.00,        "cantBultosItem": 1,        "bonificacion": 0,        "importeItem": 12375.00      }    ],    "subtotal": null,  "impuestos":{"IVA":{"tasa":null,"monto":null},"percepcionIVA":{"tasa":null,"monto":null},"percepcionIIBB":{"tasa":null,"monto":null},"IIBB":{"tasa":null,"monto":null},"totalRecargoPorVencimiento": {"tasa": null,"monto": null},"otrosImpuestos": []}, "total": 250569.00  }` }],
+        parts: [{ text: `{    "numeroFactura": "1 62114",    "tipoFactura": nul,    "fechaEmision": "25-03-2024",    "fechaVencimiento": null,    "emisor": {      "nombre": null,      "direccion": null,      "telefono": null,      "email": null,      "CUIT": null    },    "receptor": {      "nombre": "CREANDO PAN S.A",      "direccion": "MIGUEL ANGEL 5495 VILLA BOSCH Buenos Aires",      "telefono": null,      "email": null,      "CUIT": "30-71602726-7"    },    "items": [      {        "codigo": null,        "descripcion": "MANI CROCANTE C/CHOC SIMOAR",        "volumenUnidad": 5,        "medicionVolumen": "Kilogramos",        "cantUnidadesBulto": 1,        "precioBulto": 25375.00,        "precioUnidad": 25375.00,        "cantBultosItem": 2,        "bonificacion": 0,        "importeItem": 50750.00      },      {        "codigo": null,        "descripcion": "MAYONESA DANICA",        "volumenUnidad": 2.9,        "medicionVolumen": "Litros",        "cantUnidadesBulto": 1,        "precioBulto": 5978.00,        "precioUnidad": 5978.00,        "cantBultosItem": 8,        "bonificacion": 0,        "importeItem": 47824.00      },      {        "codigo": null,        "descripcion": "CEREZAS ROJAS ENT.CERESKINAS BALDE",        "volumenUnidad": 3.1,        "medicionVolumen": "Kilogramos",        "cantUnidadesBulto": 1,        "precioBulto": 27360.00,        "precioUnidad": 27360.00,        "cantBultosItem": 4,        "bonificacion": 0,        "importeItem": 109440.00      },      {        "codigo": null,        "descripcion": "HIGOS BALDE NATURALES CERESKINAS",        "volumenUnidad": 3.1,        "medicionVolumen": "Kilogramos",        "cantUnidadesBulto": 1,        "precioBulto": 15090.00,        "precioUnidad": 15090.00,        "cantBultosItem": 2,        "bonificacion": 0,        "importeItem": 30180.00      },      {        "codigo": null,        "descripcion": "MIEL DON CARLOS",        "volumenUnidad": 5,        "medicionVolumen": "Kilogramos",        "cantUnidadesBulto": 1,        "precioBulto": 12375.00,        "precioUnidad": 12375.00,        "cantBultosItem": 1,        "bonificacion": 0,        "importeItem": 12375.00      }    ],    "subtotal": null,  "impuestos":{"IVA":{"tasa":null,"monto":null},"percepcionIVA":{"tasa":null,"monto":null},"percepcionIIBB":{"tasa":null,"monto":null},"IIBB":{"tasa":null,"monto":null},"totalRecargoPorVencimiento": {"tasa": null,"monto": null},"otrosImpuestos": []}, "total": 250569.00  }` }],
       },
       {
         role: "user",
@@ -209,17 +210,116 @@ async function run() {
     },
   });
 
-  const imagenUsuario = fileToGenerativePart("imagenUsuario.jpg", "image/jpg")
+  const imagenUsuario = fileToGenerativePart("facturasEntrenamiento/factura4.jpg", "image/jpg")
 
-  const history = await chat.getHistory();
-  const msgContent = { role: "user", parts: [{ text: "modo ultra-detallado" }, imagenUsuario] };
-  const contents = [...history, msgContent];
-  const { totalTokens } = await model.countTokens({ contents });
+  // const history = await chat.getHistory();
+  // const msgContent = { role: "user", parts: [{ text: "modo ultra-detallado" }, imagenUsuario] };
+  // const contents = [...history, systemInstruction  ,msgContent];
+  // const { totalTokens } = await model.countTokens({ systemInstruction });
 
   const result = await chat.sendMessage(["modo ultra-detallado", imagenUsuario]);
   const response = await result.response;
   const text = response.text();
-  console.log(text);
+  let jsonData = null;
+  // Check if text starts with "An error occurred"
+  if (text.startsWith("An error occurred")) {
+      console.error("Error occurred:", text);
+      // Handle the error appropriately, maybe by throwing an exception or returning an error object
+  } else {
+      // Assuming the response is JSON, parse it
+      try {
+          jsonData = JSON.parse(text);
+          // Now you can work with the jsonData object
+      } catch (error) {
+          console.error("Error parsing JSON:", error);
+          // Handle the parsing error appropriately
+      }
+  }
+  // const datosInsertar = {
+  //   numeroFactura: jsonData.numeroFactura,
+  //   tipoFactura: jsonData.tipoFactura,
+  //   fechaEmision: jsonData.fechaEmision,
+  //   fechaVencimiento: jsonData.fechaVencimiento,
+  //   emisorNombre: jsonData.emisor.nombre,
+  //   emisorCUIT: jsonData.emisor.CUIT,
+  //   items: jsonData.items.map(item => ({
+  //     codigo: item.codigo,
+  //     descripcion: item.descripcion,
+  //     volumenUnidad: item.volumenUnidad,
+  //     medicionVolumen: item.medicionVolumen,
+  //     cantUnidadesBulto: item.cantUnidadesBulto,
+  //     precioBulto: item.precioBulto,
+  //     precioUnidad: item.precioUnidad,
+  //     cantBultosItem: item.cantBultosItem,
+  //     bonificacion: item.bonificacion,
+  //     importeItem: item.importeItem
+  //   })),
+  //   subtotal: jsonData.subtotal,
+  //   ivaMonto: jsonData.impuestos.IVA.monto,
+  //   percepcionIVAMonto: jsonData.impuestos.percepcionIVA.monto,
+  //   percepcionIBBMonto: jsonData.impuestos.perepcionIIBB.monto,
+  //   IBBMonto: jsonData.impuestos.IIBB.monto,
+  //   totalRecargoPorVencimientoMonto: jsonData.impuestos.totalRecargoPorVencimiento.monto,
+  //   otrosImpuestos: jsonData.impuestos.otrosImpuestos.map(otroImpuesto => ({
+  //     nombre: otroImpuesto.nombre,
+  //     tasa: otroImpuesto.tasa,
+  //     monto: otroImpuesto.monto
+  //   })),
+  //   total: jsonData.total
+  // };
+// Función para convertir fechas al formato AAAA-MM-DD
+const formatDate = (dateString) => {
+  if (dateString !== null) {
+    const [day, month, year] = dateString.split('-');
+    return `${year}-${month}-${day}`;
+  }
+  return null;
+};
+
+function cuitANumero(cuitConGuiones) {
+  if (cuitConGuiones) {
+      var cuitNumerico = cuitConGuiones.replace(/-/g, '');
+      // Convertir el resultado a un número entero estándar
+      return parseInt(cuitNumerico, 10); // O también podrías usar Number(cuitNumerico)
+  } else {
+      return null;
+  }
+}
+
+  const cuitEmisorNumerico = cuitANumero(jsonData.emisor.CUIT);
+
+
+// Datos de la factura con fechas en formato 'dd-mm-aaaa'
+const datosInsertarFactura = {
+  numeroFactura: jsonData.numeroFactura || null,
+  tipoFactura: jsonData.tipoFactura || null,
+  fechaEmision: formatDate(jsonData.fechaEmision),
+  fechaVencimiento: formatDate(jsonData.fechaVencimiento),
+  emisorNombre: jsonData.emisor.nombre || null,
+  emisorCUIT: cuitEmisorNumerico || null,
+  total: jsonData.total || null,
+  ivaMonto: jsonData.impuestos.IVA.monto || null
+};
+console.log(datosInsertarFactura.emisorCUIT)
+// Función para enviar la factura al servidor
+async function enviarFactura() {
+  try {
+    const response = await axios.put('http://localhost:8800/cargarFactura', datosInsertarFactura);
+    console.log('Respuesta del servidor:', response.data);
+  } catch (error) {
+    if (error.response) {
+      console.log('Error response data:', error.response.data);
+    } else {
+      console.log('Error:', error.message);
+    }
+  }
+}
+
+// Llamar a la función para enviar la factura
+enviarFactura();
+  
+
+  // console.log(text);
 } catch (error) {
     console.error("An error occurred:", error);
   }

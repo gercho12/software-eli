@@ -84,6 +84,41 @@ app.get('/proveedor', (req, res) => {
     });
 });
 
+
+// Función para limpiar y convertir un CUIT a formato numérico
+
+// Ruta para insertar los datos en la tabla facturasregistradas
+app.put('/cargarFactura', (req, res) => {
+  const datos = req.body;
+
+  const sql = `
+    INSERT INTO facturasregistradas (
+      numeroFactura, tipoFactura, fechaEmision, fechaVencimiento,
+      proveedorEmisor, proveedorCuit, costoTotal, iva, estadoAbonado
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  const valores = [
+    datos.numeroFactura, 
+    datos.tipoFactura, 
+    new Date(datos.fechaEmision), // Convertir la fecha a objeto Date
+    new Date(datos.fechaVencimiento), // Convertir la fecha a objeto Date
+    datos.emisorNombre, 
+    datos.emisorCUIT, // Usar el CUIT limpio y numérico
+    datos.total, 
+    datos.ivaMonto, 
+    0 // Asumiendo que estadoAbonado inicialmente es 0 (no abonado)
+  ];
+
+  db.query(sql, valores, (err, result) => {
+    if (err) {
+      console.error('Error al insertar la factura:', err);
+      return res.status(500).json({ message: 'Error al insertar la factura', error: err.message });
+    }
+    res.status(200).json({ message: 'Factura insertada correctamente' + datos.emisorCUIT,  });
+  });
+});
+
   app.get('/facturasNoAbonadas', (req, res) => {
     const currentDate = new Date().toLocaleDateString('es-AR', { year: 'numeric', month: '2-digit', day: '2-digit' });
   
@@ -210,6 +245,6 @@ app.post('/proveedor/creacion', (req, res) => {
   
   
 
-app.listen(8800, '0.0.0.0', ()=>{
+app.listen(8800, ()=>{
   console.log("Connected to backend!");
   })
