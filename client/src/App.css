@@ -31,7 +31,8 @@
             height: 100vh;
             width: 90px;
             background-color: rgb(241, 241, 241);
-            z-index: 10;
+            z-index: 9999999;
+
 
         }
         .navbarInner{
@@ -1000,6 +1001,239 @@
             /* flex-wrap: wrap; */
 
         }
+         .modalBackground{
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background-color:#000000a5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+
+        }
+         .modal{
+            position:relative;
+            height: fit-content;
+            border-radius: 26px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px;
+            padding-top: 10px;
+        }
+        .modal.modalCargarArchivo{
+background-color: white;
+gap: 10px;
+            left: 70px;
+            width: 550px;
+
+        }
+        .modal.modalCargarDatos{
+background-color: #f2f2f2;
+left: 70px;
+            width: 750px;
+height: 90vh;
+
+        }
+        .modal.modalCargarDatos .seccionesDatos{
+            gap: 20px;
+width: 100%;
+background-color: white;
+border-radius: 15px;
+padding:15px 20px;
+            overflow-y: scroll;
+            height: 100%;
+        }
+
+                
+        .modal.modalCargarDatos .tituloModal{
+        }
+        .modal.modalCargarDatos .seccionDatos .tipoFactura{
+            width: 100%;
+
+        }
+
+        .modal.modalCargarDatos .seccionDatos{
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .modal.modalCargarDatos .seccionDatos .datos{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .modal.modalCargarDatos .seccionDatos h2{
+            font-size: 24px;
+            font-weight: 500;
+        }
+        .modal.modalCargarDatos .seccionDatos h3{
+            font-size: 18px;
+            font-weight: 400;
+            color: #3b3b3b;
+            margin: 0%;
+            padding: 0%;
+        }
+        .modal.modalCargarDatos .dato{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+        }
+        .modal.modalCargarDatos .dato.impuesto{
+            width: 30%;
+            height: 100px;
+        }
+        .modal.modalCargarDatos .dato.impuestoAgregado{
+            width: 30%;
+            height: 100px;
+        }
+
+        .modal.modalCargarDatos .dato.nombreImpuesto{
+            font-size: 18px;
+            font-weight: 400;
+            color: #3b3b3b;
+        }
+        .modal.modalCargarDatos .impuestosFactura .agregarImpuesto{
+            height: auto;
+            width: 30%;
+            border-radius: 15px;
+            background-color: rgb(207, 207, 207);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #3b3b3b;
+            font-size: 36px;
+            cursor: pointer;
+            font-weight: 400;
+            height: 100px;
+        }
+        .modal.modalCargarDatos .dato input{
+            border-radius: 20px;
+            padding-inline:5px;
+            flex-direction: row-reverse;
+            border:1.5px #3b3b3b solid ;
+            height: 26px;
+            font-size: 14px;
+            font-weight: 400;
+            width: 100%;
+            max-width: 200px;
+
+        }
+        .modal.modalCargarDatos .dato .tiposFactura{
+            display: flex;
+            gap: 10px;
+
+        }
+        .modal.modalCargarDatos .impuestosFactura .dato .inputTasa{
+            display: flex;
+            gap: 5px;
+            font-weight: 500;
+            width: 70px;
+
+        }
+
+
+
+        .modal.modalCargarDatos .dato .tiposFactura .tipo{
+            border: 2px solid #8e8e8e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            width: 55px;
+            text-align: center;
+            aspect-ratio: 1/1;
+            font-size: 18px;
+            color: #8e8e8e;
+            font-weight: 500;
+
+        }
+
+        .modal.modalCargarDatos .dato .tiposFactura .tipo.seleccionado{
+            border: 2px solid #000;
+            color: #3b3b3b;
+            font-weight: 500;
+
+        }
+
+        .modal .cargando{
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 26px;
+            width: 100%;
+            height: 100%;
+            background-color: #0000006d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .loader {
+            width: 48px;
+            height: 48px;
+            background: #fff;
+            border-radius: 50%;
+            position: relative;
+            animation: skLinRotate 1s ease-in-out infinite alternate;
+          }
+          .loader:after{
+            content:"";
+            position: absolute;
+            inset: 5px;
+            border-radius: 50%;
+            border: 5px solid transparent;
+            border-top-color: #3b3b3b;
+          }
+          @keyframes skLinRotate {
+            95% ,100% { transform: rotate(840deg) }
+          }
+        .modal button{
+            border-radius: 15px;
+        }
+
+         .modal h2{
+                font-size: 32px;
+                font-weight: 600;
+                color: #3b3b3b;
+        }
+         .modal h2 span{
+            color: #adadad;
+    }
+    .filelabel {
+        width: 100%;
+        border: 2px dashed grey;
+        border-radius: 15px;
+        padding: 25px;
+        cursor: pointer;
+        text-align: center;
+        margin: 0;
+      display:flex;
+      flex-direction:column;
+      gap: 5px;
+    }
+    .filelabel i {
+        display: block;
+        font-size: 30px;
+        padding-bottom: 5px;
+    }
+    .filelabel i,
+    .filelabel .title {
+      color: #3b3b3b;
+      font-weight: 500;
+      font-size:26px;
+    }
+    .filelabel .subtitle {
+      color: #adadad;
+      font-weight: 400;
+      font-size:16px;
+      line-height: 18px;
+    }
+    
+    #FileInput{
+        display:none;
+    }
         .facturas .bottom{
             width: 100%;
             background-color: rgba(0, 0, 0, 0.06);
@@ -1039,6 +1273,8 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            z-index: 9999;
+
         }
         .facturas .bottom .listaFacturas .factura{
             width: 100%;

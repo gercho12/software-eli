@@ -42,11 +42,15 @@
 
 import express from "express";
 import mysql from "mysql";
+import fileUpload from 'express-fileupload';
+
 import cors from "cors";
+import { run } from './tryGemini.js';
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(fileUpload());
 
 const db = mysql.createConnection({
     host:"localhost",
@@ -61,7 +65,7 @@ app.get('/proveedor', (req, res) => {
       if (err) return res.json(err);
       return res.json(data)
     });
-  });
+  });  
 
   app.get('/facturas', (req, res) => {
 
@@ -70,7 +74,7 @@ app.get('/proveedor', (req, res) => {
     db.query(q, (err, data) => {
       if (err) return res.json(err);
       return res.json(data)
-    });
+    }); 
   });
 
   app.put('/actualizarFactura/:id/:estadoAbonado', async (req, res) => {
@@ -243,7 +247,27 @@ app.post('/proveedor/creacion', (req, res) => {
     });
   });
   
+
+
+  app.post('/process-invoice', async (req, res) => {
+    if (!req.files || !req.files.invoice) {
+      return res.status(400).send('No files were uploaded.');
+    }
   
+    const invoice = req.files.invoice;
+    const filePath = `./uploads/${invoice.name}`;
+    
+    // Save the file
+    await invoice.mv(filePath);
+  
+    try {
+      // Call the function from tryGemini.js
+      const result = await run(filePath);
+      res.json(result);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  });
 
 app.listen(8800, ()=>{
   console.log("Connected to backend!");

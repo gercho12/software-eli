@@ -17,7 +17,7 @@ function fileToGenerativePart(path, mimeType) {
   };
 }
 
-async function run() {
+export async function run(filePath) {
 
     const systemInstruction = `Eres un asistente encargado de procesar facturas de manera exhaustiva y precisa, sin importar su formato, para extraer y estructurar los datos contenidos en ellas. Recibes archivos de factura en cualquier formato (PDF, imagen, Excel, etc.) y devuelves los datos en formato JSON para su inserción directa en una base de datos de gestión de facturas.
 
@@ -210,7 +210,7 @@ async function run() {
     },
   });
 
-  const imagenUsuario = fileToGenerativePart("facturasEntrenamiento/factura4.jpg", "image/jpg")
+  const imagenUsuario = fileToGenerativePart("imagenUsuario.jpg", "image/jpg")
 
   // const history = await chat.getHistory();
   // const msgContent = { role: "user", parts: [{ text: "modo ultra-detallado" }, imagenUsuario] };
@@ -229,9 +229,11 @@ async function run() {
       // Assuming the response is JSON, parse it
       try {
           jsonData = JSON.parse(text);
+          return jsonData;
           // Now you can work with the jsonData object
       } catch (error) {
           console.error("Error parsing JSON:", error);
+          return ("Error parsing JSON:", error);
           // Handle the parsing error appropriately
       }
   }
@@ -268,55 +270,55 @@ async function run() {
   //   total: jsonData.total
   // };
 // Función para convertir fechas al formato AAAA-MM-DD
-const formatDate = (dateString) => {
-  if (dateString !== null) {
-    const [day, month, year] = dateString.split('-');
-    return `${year}-${month}-${day}`;
-  }
-  return null;
-};
+// const formatDate = (dateString) => {
+//   if (dateString !== null) {
+//     const [day, month, year] = dateString.split('-');
+//     return `${year}-${month}-${day}`;
+//   }
+//   return null;
+// };
 
-function cuitANumero(cuitConGuiones) {
-  if (cuitConGuiones) {
-      var cuitNumerico = cuitConGuiones.replace(/-/g, '');
-      // Convertir el resultado a un número entero estándar
-      return parseInt(cuitNumerico, 10); // O también podrías usar Number(cuitNumerico)
-  } else {
-      return null;
-  }
-}
+// function cuitANumero(cuitConGuiones) {
+//   if (cuitConGuiones) {
+//       var cuitNumerico = cuitConGuiones.replace(/-/g, '');
+//       // Convertir el resultado a un número entero estándar
+//       return parseInt(cuitNumerico, 10); // O también podrías usar Number(cuitNumerico)
+//   } else {
+//       return null;
+//   }
+// }
 
-  const cuitEmisorNumerico = cuitANumero(jsonData.emisor.CUIT);
+//   const cuitEmisorNumerico = cuitANumero(jsonData.emisor.CUIT);
 
 
-// Datos de la factura con fechas en formato 'dd-mm-aaaa'
-const datosInsertarFactura = {
-  numeroFactura: jsonData.numeroFactura || null,
-  tipoFactura: jsonData.tipoFactura || null,
-  fechaEmision: formatDate(jsonData.fechaEmision),
-  fechaVencimiento: formatDate(jsonData.fechaVencimiento),
-  emisorNombre: jsonData.emisor.nombre || null,
-  emisorCUIT: cuitEmisorNumerico || null,
-  total: jsonData.total || null,
-  ivaMonto: jsonData.impuestos.IVA.monto || null
-};
-console.log(datosInsertarFactura.emisorCUIT)
+// // Datos de la factura con fechas en formato 'dd-mm-aaaa'
+// const datosInsertarFactura = {
+//   numeroFactura: jsonData.numeroFactura || null,
+//   tipoFactura: jsonData.tipoFactura || null,
+//   fechaEmision: formatDate(jsonData.fechaEmision),
+//   fechaVencimiento: formatDate(jsonData.fechaVencimiento),
+//   emisorNombre: jsonData.emisor.nombre || null,
+//   emisorCUIT: cuitEmisorNumerico || null,
+//   total: jsonData.total || null,
+//   ivaMonto: jsonData.impuestos.IVA.monto || null
+// };
+// console.log(datosInsertarFactura.emisorCUIT)
 // Función para enviar la factura al servidor
-async function enviarFactura() {
-  try {
-    const response = await axios.put('http://localhost:8800/cargarFactura', datosInsertarFactura);
-    console.log('Respuesta del servidor:', response.data);
-  } catch (error) {
-    if (error.response) {
-      console.log('Error response data:', error.response.data);
-    } else {
-      console.log('Error:', error.message);
-    }
-  }
-}
+// async function enviarFactura() {
+//   try {
+//     const response = await axios.put('http://localhost:8800/cargarFactura', datosInsertarFactura);
+//     console.log('Respuesta del servidor:', response.data);
+//   } catch (error) {
+//     if (error.response) {
+//       console.log('Error response data:', error.response.data);
+//     } else {
+//       console.log('Error:', error.message);
+//     }
+//   }
+// }
 
-// Llamar a la función para enviar la factura
-enviarFactura();
+// // Llamar a la función para enviar la factura
+// enviarFactura();
   
 
   // console.log(text);
