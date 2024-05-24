@@ -29,7 +29,7 @@
 
         .navbar{
             height: 100vh;
-            width: 90px;
+            width: 75px;
             background-color: rgb(241, 241, 241);
             z-index: 9999999;
 
@@ -75,46 +75,43 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            background-color: white;
             border-radius: 30px;
         }
         .navbarInner .links .link .icon{
             width: 100%;
         }
         .navbarInner .links .link.seleccionado{
-            background-color: #3b3b3b;
+            background-color: #e7e7e7;
         }
+        .navbarInner .links .link.seleccionado svg{
+            fill: #808080;
+        } 
         .hidden{
             display: none;
         }
 
         .navbarInner .user{
-            background-color: rgba(0, 0, 0, 0.06);
             
-            padding: 5px;
             border-radius: 50px;
-            width: 100%;
             display: flex;
             flex-direction: column;
             gap: 5px;
+            width: 50px;
+            background-color: rgba(0, 0, 0, 0.06);
+            height: 50px;
 
         }    
-        .navbarInner .user img{
-        width: 100%;
-        aspect-ratio: 1/1;
-        border-radius: 40px;
-        }
+
         .navbarInner .user .logout{
             width: 100%;
             aspect-ratio: 1/1;
             border-radius: 40px;
-            background-color: rgba(0, 0, 0, 0.06);
             display: flex;
             justify-content: center;
             align-items: center;
             }
         .navbarInner .user .logout svg{
-            width: 28px;
+            width: 60%;
         }
 
 
@@ -827,167 +824,6 @@
           .overlay.show {
               display: block;
             }
-            @media (max-width: 585px) {
-   
-                .proveedores .left .listaProveedores .listado .proveedor{
-                    background-color: rgba(0, 0, 0, 0.06);
-
-                    max-width: 36.5vw;
-                    min-width: 36.5vw;
-                    border-radius: 4.62vw;
-                }
-
-                .proveedores .left .listaProveedores .listado{
-                    flex-wrap: wrap;
-    
-                    } 
-                .proveedores .left .listaProveedores .listado .proveedor h2{
-                    font-size: 3.7vw;
-                }
-                .proveedores .left .listaProveedores .listado .proveedor h3{
-                    font-size: 3.3vw;
-        
-                }
-                .proveedores .left .listaProveedores .top button{
-                    width: 100%;
-                }
-            }
-          
-          @media (max-width: 1023px) {
-            .proveedores{
-                gap: 20px;
-            }
-            .proveedores .right {
-                width: 100%;
-                height: 600px;
-              }
-          }
-          
-
-
-          @media (max-width: 1040px) {
-            .dashboard .grid {
-               display: flex;
-               flex-direction: column;
-            max-height: none;
-
-             }
-             .dashboard .grid .right{
-                width: 100%;
-                min-width: none;
-                min-width: 250px;
-
-             }
-           }
-           @media (max-width: 425px) {
-            .dashboard .grid .left .targetas{
-               display: flex;
-               flex-direction: column;
-             }
-             .dashboard .grid .left .targetas .targeta{
-                width: 100%;
-              }
-            .dashboard .grid .right .facturasNoa .boton{
-                display: none;
-            }
-            .dashboard .grid .right .facturasNoa .facturaNoa{
-                display: flex;
-                justify-content: center;
-            }
-            .dashboard .grid .right .facturasNoa h2:last-of-type{
-                width: auto;
-            }
-
-              
-           }
-          
-           @media (max-width: 768px) {
-            .dashboard{
-                padding: 10px;
-                padding-bottom: 75px;
-            }
-            .proveedores{
-                padding: 10px;
-                padding-bottom: 75px;
-            }
-            .navbar{
-                width:100vw;
-                height: 65px;
-                background-color: rgb(241, 241, 241);
-                position: fixed;
-    
-            }
-            .navbarInner{
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                padding:15px;
-                box-sizing: border-box;
-                width: 100%;
-                height: 100%;
-            }
-            .navbarInner .top{
-                display: flex;
-                align-items: center;
-                flex-direction: row;
-                gap: 20px;
-            }
-            .navbarInner .top .logo{
-                width: 50px;
-                aspect-ratio: 1/1;
-                background-color: #3b3b3b;
-                border-radius: 20px;
-                display: none;
-            }
-            .navbarInner .logo{
-                width: 100%;
-                margin-bottom: 20px;
-            }
-            .navbarInner .links{
-                display: flex;
-                flex-direction: row;
-                gap: 15px;
-    
-            }
-            .navbarInner .user{
-                background-color: rgba(0, 0, 0, 0.06);
-                
-                padding: 5px;
-                border-radius: 50px;
-                height: 100%;
-                display: flex;
-                flex-direction: row;
-                gap: 5px;
-                width: 50px;
-    
-            }    
-            .navbarInner .user img{
-            display: none;
-            }
-            .navbarInner .user .logout{
-                height: 100%;
-                aspect-ratio: 1/1;
-                border-radius: 40px;
-                background-color: rgba(0, 0, 0, 0.06);
-                aspect-ratio: 1/1;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                }
-            .navbarInner .user .logout svg{
-                width: 22px;
-            }
-            .navbarInner .links .link{
-                padding: 6.5%;
-                width: 45px;
-                box-sizing: border-box;
-                height: 45px;
-            }
-            .app{
-                flex-direction: column-reverse;
-            }
-        }
 
         .facturas{
             display: flex;
@@ -1002,52 +838,58 @@
 
         }
          .modalBackground{
-            position: fixed;
-            width: 100vw;
+            position: absolute;
+            right: 0;
+            width: calc(100vw - 75px);
             height: 100vh;
             background-color:#000000a5;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 999999;
+            padding:15px;
 
         }
          .modal{
             position:relative;
-            height: fit-content;
             border-radius: 26px;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            padding: 20px;
+            padding: 15px;
             padding-top: 10px;
         }
         .modal.modalCargarArchivo{
-background-color: white;
-gap: 10px;
-            left: 70px;
+            background-color: white;
+            gap: 10px;
+            height: fit-content;
+            left: 40px;
             width: 550px;
 
         }
         .modal.modalCargarDatos{
-background-color: #f2f2f2;
-left: 70px;
-            width: 750px;
-height: 90vh;
+            background-color: #f2f2f2;
+            width: 100%;
+            max-width: 750px;
+            height: 100%;
 
         }
         .modal.modalCargarDatos .seccionesDatos{
+            display: flex;
+            flex-direction: column;
             gap: 20px;
-width: 100%;
-background-color: white;
-border-radius: 15px;
-padding:15px 20px;
+            width: 100%;
+            background-color: white;
+            border-radius: 15px;
+            padding:15px 20px;
             overflow-y: scroll;
             height: 100%;
         }
 
                 
-        .modal.modalCargarDatos .tituloModal{
+        .modal h2 svg{
+            width: 30px;
+            margin-left: 5px;
         }
         .modal.modalCargarDatos .seccionDatos .tipoFactura{
             width: 100%;
@@ -1081,8 +923,46 @@ padding:15px 20px;
             gap: 5px;
 
         }
+        .modal.modalCargarDatos .dato.item{
+            background-color: #F1F1F1;
+            border-radius: 15px;
+            padding: 15px;
+            position: relative;
+            width: 32.2%;
+        }
+        .modal.modalCargarDatos .dato.item .cerrar{
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #dedede;
+            border-radius: 50px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+        }
+        .modal.modalCargarDatos .dato.item .cerrar h2{
+            font-size: 75%;
+            color: #8e8e8e;
+            text-align: center;
+        }
+
+        .modal.modalCargarDatos .dato.item h3{
+            font-size: 16px;
+        }
+
+        .modal.modalCargarDatos .dato.item input{
+            border: 2px solid #dedede;
+            background-color: #F1F1F1;
+            width: 100%;
+        }
+
+
         .modal.modalCargarDatos .dato.impuesto{
-            width: 30%;
+           width: 200px;
             height: 100px;
         }
         .modal.modalCargarDatos .dato.impuestoAgregado{
@@ -1097,9 +977,11 @@ padding:15px 20px;
         }
         .modal.modalCargarDatos .impuestosFactura .agregarImpuesto{
             height: auto;
-            width: 30%;
+            width: 200px;
+            height: 100px;
             border-radius: 15px;
-            background-color: rgb(207, 207, 207);
+            background-color: #F1F1F1;
+            border: 1px #3b3b3b dashed  ;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1107,15 +989,15 @@ padding:15px 20px;
             font-size: 36px;
             cursor: pointer;
             font-weight: 400;
-            height: 100px;
         }
         .modal.modalCargarDatos .dato input{
             border-radius: 20px;
-            padding-inline:5px;
             flex-direction: row-reverse;
-            border:1.5px #3b3b3b solid ;
+            border:1px rgb(195, 195, 195) solid ;
             height: 26px;
             font-size: 14px;
+            padding-left: 8px;
+            padding-right: 5px;
             font-weight: 400;
             width: 100%;
             max-width: 200px;
@@ -1124,29 +1006,31 @@ padding:15px 20px;
         .modal.modalCargarDatos .dato .tiposFactura{
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
+
 
         }
-        .modal.modalCargarDatos .impuestosFactura .dato .inputTasa{
+        .modal.modalCargarDatos .dato .inputTasa{
             display: flex;
             gap: 5px;
             font-weight: 500;
-            width: 70px;
+            width: 80px;
 
         }
 
 
 
         .modal.modalCargarDatos .dato .tiposFactura .tipo{
-            border: 2px solid #8e8e8e;
+            border: 2px solid rgb(195, 195, 195);
             display: flex;
             justify-content: center;
             align-items: center;
             border-radius: 12px;
-            width: 55px;
+            min-width: 55px;
             text-align: center;
-            aspect-ratio: 1/1;
+            height: 55px;
             font-size: 18px;
-            color: #8e8e8e;
+            color: rgb(195, 195, 195);
             font-weight: 500;
 
         }
@@ -1198,9 +1082,12 @@ padding:15px 20px;
                 font-weight: 600;
                 color: #3b3b3b;
         }
-         .modal h2 span{
+         .modal h2 span,.modal h2 svg {
             color: #adadad;
     }
+    .modal h2 span{
+        color: #adadad;
+}
     .filelabel {
         width: 100%;
         border: 2px dashed grey;
@@ -1487,3 +1374,170 @@ padding:15px 20px;
         .facturas .bottom .listaFacturas .factura .facturaItems.selected{
             display: flex;
         }
+
+
+        @media (max-width: 585px) {
+   
+            .proveedores .left .listaProveedores .listado .proveedor{
+                background-color: rgba(0, 0, 0, 0.06);
+
+                max-width: 36.5vw;
+                min-width: 36.5vw;
+                border-radius: 4.62vw;
+            }
+
+            .proveedores .left .listaProveedores .listado{
+                flex-wrap: wrap;
+
+                } 
+            .proveedores .left .listaProveedores .listado .proveedor h2{
+                font-size: 3.7vw;
+            }
+            .proveedores .left .listaProveedores .listado .proveedor h3{
+                font-size: 3.3vw;
+    
+            }
+            .proveedores .left .listaProveedores .top button{
+                width: 100%;
+            }
+        }
+      
+      @media (max-width: 1023px) {
+        .proveedores{
+            gap: 20px;
+        }
+        .proveedores .right {
+            width: 100%;
+            height: 600px;
+          }
+      }
+      
+
+
+      @media (max-width: 1040px) {
+        .dashboard .grid {
+           display: flex;
+           flex-direction: column;
+        max-height: none;
+
+         }
+         .dashboard .grid .right{
+            width: 100%;
+            min-width: none;
+            min-width: 250px;
+
+         }
+       }
+       @media (max-width: 425px) {
+        .dashboard .grid .left .targetas{
+           display: flex;
+           flex-direction: column;
+         }
+         .dashboard .grid .left .targetas .targeta{
+            width: 100%;
+          }
+        .dashboard .grid .right .facturasNoa .boton{
+            display: none;
+        }
+        .dashboard .grid .right .facturasNoa .facturaNoa{
+            display: flex;
+            justify-content: center;
+        }
+        .dashboard .grid .right .facturasNoa h2:last-of-type{
+            width: auto;
+        }
+
+          
+       }
+      
+       @media (max-width: 768px) {
+        .dashboard{
+            padding: 10px;
+            padding-bottom: 75px;
+        }
+        .proveedores{
+            padding: 10px;
+            padding-bottom: 75px;
+        }
+        .modalBackground{
+            width: 100vw;
+            height: calc(100vh - 55px);
+            padding-block: 15px;
+            top: 0;
+        }
+        .navbar{
+            width:100vw;
+            height: 55px;
+            background-color: rgb(241, 241, 241);
+            position: fixed;
+
+        }
+        .navbarInner{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding:15px;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+        }
+        .navbarInner .top{
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            gap: 20px;
+        }
+        .navbarInner .top .logo{
+            width: 50px;
+            aspect-ratio: 1/1;
+            background-color: #3b3b3b;
+            border-radius: 20px;
+            display: none;
+        }
+        .navbarInner .logo{
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .navbarInner .links{
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+
+        }
+        .navbarInner .user{
+            background-color: rgba(0, 0, 0, 0.06);
+            
+            padding: 5px;
+            border-radius: 50px;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+            width: 50px;
+
+        }    
+
+        .navbarInner .user .logout{
+            height: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 40px;
+            background-color: rgba(0, 0, 0, 0.06);
+            aspect-ratio: 1/1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            }
+        .navbarInner .user .logout svg{
+            width: 22px;
+        }
+        .navbarInner .links .link{
+            padding: 6.5%;
+            width: 45px;
+            box-sizing: border-box;
+            height: 45px;
+        }
+        .app{
+            flex-direction: column-reverse;
+        }
+    }

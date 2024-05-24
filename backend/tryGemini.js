@@ -66,10 +66,6 @@ export async function run(filePath) {
             "tasa": 0.02,
             "monto": 604.01
           },
-          "totalRecargoPorVencimiento": {
-            "tasa": null,
-            "monto": 900
-          },
           "otrosImpuestos": [
             {
               "nombre": "nombreImpuestoReconocido",
@@ -83,9 +79,9 @@ export async function run(filePath) {
             }
           ]
         },
-        "total": 38.657,04
+        "total": 38657.04,
+        "totalVencimiento": 42657.04
       }
-      "totalRecargoPorVencimiento": {"tasa": null,"monto": null},
     Algunos clientes pueden requerir una estructura de datos personalizada para los items de la factura. Es por eso que, unicamente al ser indicado el modo "ultra-detallado", los items se deben devolver tal que asi:
     
     {
@@ -237,38 +233,38 @@ export async function run(filePath) {
           // Handle the parsing error appropriately
       }
   }
-  // const datosInsertar = {
-  //   numeroFactura: jsonData.numeroFactura,
-  //   tipoFactura: jsonData.tipoFactura,
-  //   fechaEmision: jsonData.fechaEmision,
-  //   fechaVencimiento: jsonData.fechaVencimiento,
-  //   emisorNombre: jsonData.emisor.nombre,
-  //   emisorCUIT: jsonData.emisor.CUIT,
-  //   items: jsonData.items.map(item => ({
-  //     codigo: item.codigo,
-  //     descripcion: item.descripcion,
-  //     volumenUnidad: item.volumenUnidad,
-  //     medicionVolumen: item.medicionVolumen,
-  //     cantUnidadesBulto: item.cantUnidadesBulto,
-  //     precioBulto: item.precioBulto,
-  //     precioUnidad: item.precioUnidad,
-  //     cantBultosItem: item.cantBultosItem,
-  //     bonificacion: item.bonificacion,
-  //     importeItem: item.importeItem
-  //   })),
-  //   subtotal: jsonData.subtotal,
-  //   ivaMonto: jsonData.impuestos.IVA.monto,
-  //   percepcionIVAMonto: jsonData.impuestos.percepcionIVA.monto,
-  //   percepcionIBBMonto: jsonData.impuestos.perepcionIIBB.monto,
-  //   IBBMonto: jsonData.impuestos.IIBB.monto,
-  //   totalRecargoPorVencimientoMonto: jsonData.impuestos.totalRecargoPorVencimiento.monto,
-  //   otrosImpuestos: jsonData.impuestos.otrosImpuestos.map(otroImpuesto => ({
-  //     nombre: otroImpuesto.nombre,
-  //     tasa: otroImpuesto.tasa,
-  //     monto: otroImpuesto.monto
-  //   })),
-  //   total: jsonData.total
-  // };
+    const datosInsertar = {
+    numeroFactura: jsonData.numeroFactura,
+    tipoFactura: jsonData.tipoFactura,
+    fechaEmision: jsonData.fechaEmision,
+    fechaVencimiento: jsonData.fechaVencimiento,
+    emisorNombre: jsonData.emisor.nombre,
+    emisorCUIT: jsonData.emisor.CUIT,
+    items: jsonData.items.map(item => ({
+      codigo: item.codigo,
+      descripcion: item.descripcion,
+      volumenUnidad: item.volumenUnidad,
+      medicionVolumen: item.medicionVolumen,
+      cantUnidadesBulto: item.cantUnidadesBulto,
+      precioBulto: item.precioBulto,
+      precioUnidad: item.precioUnidad,
+      cantBultosItem: item.cantBultosItem,
+      bonificacion: item.bonificacion,
+      importeItem: item.importeItem
+    })),
+    subtotal: jsonData.subtotal,
+    ivaMonto: jsonData.impuestos.IVA.monto,
+    percepcionIVAMonto: jsonData.impuestos.percepcionIVA.monto,
+    percepcionIBBMonto: jsonData.impuestos.perepcionIIBB.monto,
+    IBBMonto: jsonData.impuestos.IIBB.monto,
+    otrosImpuestos: jsonData.impuestos.otrosImpuestos.map(otroImpuesto => ({
+      nombre: otroImpuesto.nombre,
+      tasa: otroImpuesto.tasa,
+      monto: otroImpuesto.monto
+    })),
+    total: jsonData.total,
+    totalPorVencimiento: jsonData.totalPorVencimiento
+  };
 // Función para convertir fechas al formato AAAA-MM-DD
 // const formatDate = (dateString) => {
 //   if (dateString !== null) {

@@ -12,64 +12,161 @@ const Facturas = () => {
   const [loading, setLoading] = useState(false);
   const [modoSubir, setModoSubir] = useState(false);
   const [modoCreacion, setModoCreacion] = useState(true);
-  const [impuestosAgregados, setImpuestosAgregados] = useState([]);
+  const [numeroFactura, setNumeroFactura] = useState("");
   const [tipoFactura, setTipoFactura] = useState("");
-  const [importeTotalFactura, setImporteTotalFactura] = useState(null);
-  const [importeSubTotalFactura, setImporteSubTotalFactura] = useState(null);
+  const [fechaEmision, setFechaEmision] = useState("");
+  const [fechaVencimiento, setFechaVencimiento] = useState("");
+  const [emisorNombre, setEmisorNombre] = useState("");
+  const [emisorCUIT, setEmisorCUIT] = useState("");
+  const [items, setItems] = useState([]);
+  const [subtotal, setSubtotal] = useState("");
+  const [ivaMonto, setIvaMonto] = useState("");
+  const [percepcionIVAMonto, setPercepcionIVAMonto] = useState("");
+  const [percepcionIBBMonto, setPercepcionIBBMonto] = useState("");
+  const [IBBMonto, setIBBMonto] = useState("");
+  const [otrosImpuestos, setOtrosImpuestos] = useState([]);
+  const [impuestosAgregados, setImpuestosAgregados] = useState([]);
   const [facturaData, setFacturaData] = useState({});
-
-
-
-
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-
-    if (!file) {
-      return; // No se seleccionó ningún archivo, salir de la función
-    }
-    
-    setLoading(true); // Solo se establece en true si se seleccionó un archivo    const file = event.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append('invoice', file);
-
-      try {
-        const response = await axios.post('http://localhost:8800/process-invoice', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        if (response.status === 200) {
-          console.log('Success:', response.data);
-        } else {
-          console.error('Error:', response.statusText);
-          alert('Error uploading file: ' + response.statusText);
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Error uploading file: ' + error.message);
-      } finally {
-        setLoading(false);
+  const [total, setTotal] = useState("");
+  const [facturaObtenida, setFacturaObtenida] = useState({
+    numeroFactura: "123456",
+    tipoFactura: "A",
+    fechaEmision: "2022-01-01",
+    fechaVencimiento: "2022-01-15",
+    emisorNombre: "Nombre del emisor",
+    emisorCUIT: "12345678901",
+    items: [
+      {
+        codigo: null,
+        descripcion: "Descripción del item 1",
+        volumenUnidad: "10",
+        medicionVolumen: "kg",
+        cantUnidadesBulto: "100",
+        precioBulto: "1000",
+        precioUnidad: "10",
+        cantBultosItem: "10",
+        bonificacion: "10",
+        importeItem: "10000"
+      },
+      {
+        codigo: "002",
+        descripcion: "Descripción del item 2",
+        volumenUnidad: "20",
+        medicionVolumen: "L",
+        cantUnidadesBulto: "200",
+        precioBulto: "2000",
+        precioUnidad: "20",
+        cantBultosItem: "20",
+        bonificacion: "20",
+        importeItem: "40000"
       }
-    }
+    ],
+    subtotal: "50000",
+    ivaMonto: "1000",
+    percepcionIVAMonto: "200",
+    percepcionIBBMonto: "300",
+    IBBMonto: "400",
+    otrosImpuestos: [
+      {
+        nombre: "Impuesto 1",
+        tasa: "10",
+        monto: "100"
+      },
+      {
+        nombre: "Impuesto 2",
+        tasa: "20",
+        monto: "200"
+      }
+    ],
+    total: "51000"
+  });
+  
+  const handleFacturaObtenida = (facturaObtenida) => {
+    setNumeroFactura(facturaObtenida.numeroFactura);
+    setTipoFactura(facturaObtenida.tipoFactura);
+    setFechaEmision(facturaObtenida.fechaEmision);
+    setFechaVencimiento(facturaObtenida.fechaVencimiento);
+    setEmisorNombre(facturaObtenida.emisorNombre);
+    setEmisorCUIT(facturaObtenida.emisorCUIT);
+    setItems(facturaObtenida.items);
+    setSubtotal(facturaObtenida.subtotal);
+    setIvaMonto(facturaObtenida.ivaMonto);
+    setPercepcionIVAMonto(facturaObtenida.percepcionIVAMonto);
+    setPercepcionIBBMonto(facturaObtenida.percepcionIBBMonto);
+    setIBBMonto(facturaObtenida.IBBMonto);
+    setOtrosImpuestos(facturaObtenida.otrosImpuestos);
+    setTotal(facturaObtenida.total);
   };
 
+  useEffect(() => {
+    handleFacturaObtenida(facturaObtenida);
+  }, [facturaObtenida]);
 
-  // const Facturelejida = () => {
-  //   const { id } = useParams();
+  const handleAddItem = () => {
+    setItems([...items, { codigo: "", descripcion: "", volumenUnidad: "", unidadesBulto: "", precioBulto: "", bultos: "", bonificacion: "", importe: "" }]);
+  };
+  const handleImpuestoChange = (e, index, key) => {
+    const value = e.target.value;
+    setImpuestosAgregados(otrosImpuestos.map((impuesto, i) => (i === index? {...impuesto, [key]: value } : impuesto)));
+  };
+const handleItemChange = (e, index, key) => {
+  const value = e.target.value;
+  setItems(items.map((item, i) => (i === index? {...item, [key]: value } : item)));
+};
+
+
+const handleFileChange = async (event) => {
+  const file = event.target.files[0];
+
+  if (!file) {
+    return; // No se seleccionó ningún archivo, salir de la función
+  }
   
-  //   useEffect(() => {
-  //     // Función que se debe ejecutar con el parámetro id
-  //     const fetchFactura = async (id) => {
-  //       // Lógica para obtener la factura con el id proporcionado
-  //       console.log(`Fetching factura con ID: ${id}`);
-  //       // Aquí podrías hacer una llamada a una API para obtener los datos de la factura
-  //     };
-  
-  //     fetchFactura(id);
-  //   }, [id]);
-  // }
+  setLoading(true); // Solo se establece en true si se seleccionó un archivo    const file = event.target.files[0];
+  if (file) {
+    const formData = new FormData();
+    formData.append('invoice', file);
+
+    try {
+      const response = await axios.post('http://localhost:8800/process-invoice', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (response.status === 200) {
+        console.log('Success:', response.data);
+        setFacturaObtenida(response.data);
+        handleFacturaObtenida(response.data);
+        const handleFacturaObtenida = (facturaObtenida) => {
+          setNumeroFactura(facturaObtenida.numeroFactura);
+          setTipoFactura(facturaObtenida.tipoFactura);
+          setFechaEmision(facturaObtenida.fechaEmision);
+          setFechaVencimiento(facturaObtenida.fechaVencimiento);
+          setEmisorNombre(facturaObtenida.emisorNombre);
+          setEmisorCUIT(facturaObtenida.emisorCUIT);
+          setItems(facturaObtenida.items);
+          setSubtotal(facturaObtenida.subtotal);
+          setIvaMonto(facturaObtenida.ivaMonto);
+          setPercepcionIVAMonto(facturaObtenida.percepcionIVAMonto);
+          setPercepcionIBBMonto(facturaObtenida.percepcionIBBMonto);
+          setIBBMonto(facturaObtenida.IBBMonto);
+          setOtrosImpuestos(facturaObtenida.otrosImpuestos);
+          setTotal(facturaObtenida.total);
+        };
+
+      } else {
+        console.error('Error:', response.statusText);
+        alert('Error uploading file: ' + response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error uploading file: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -201,7 +298,7 @@ const Facturas = () => {
 
 
   const agregarImpuesto = () => {
-    setImpuestosAgregados(prevImpuestos => [...prevImpuestos, { nombreImpuesto: "", tasa: 0, monto: 0 }]);
+    setOtrosImpuestos(prevImpuestos => [...prevImpuestos, { nombreImpuesto: "", tasa: 0, monto: 0 }]);
   };
 
   const handleTipoFacturaClick = (tipo) => {
@@ -232,7 +329,9 @@ const Facturas = () => {
   //     )
   //   );
   // };
-
+  const handleRemoveItem = (index) => {
+    setItems(items.filter((_, i) => i!== index));
+  };
   return (
     <div className="app">
       <Navbar />
@@ -273,7 +372,7 @@ const Facturas = () => {
             </div>
            ):("")}
 
-          <h2 className='tituloModal'>Cargar factura <span>con IA</span></h2>
+          <h2 className='tituloModal'>Cargar factura <span>con IA</span> </h2>
          <div className='seccionesDatos'>  
            <div className="detallesFactura seccionDatos">
               <h2>Detalles factura</h2>
@@ -290,21 +389,21 @@ const Facturas = () => {
                   </div>
                   <div className="dato codigoFactura">
                     <h3>Codigo de factura</h3>
-                    <input type="text" />
+                    <input type="text" value={numeroFactura} onChange={(e) => setNumeroFactura(e.target.value)} />
                   </div>
 
                   <div className="dato fechaEmision">
                     <h3>Fecha de emision</h3>
-                    <input type="date" />
+                    <input type="date" value={fechaEmision} onChange={(e) => setFechaEmision(e.target.value)} />
                   </div>
                   <div className="dato fechaVencimiento">
                     <h3>Fecha de vencimiento</h3>
-                    <input type="date" />
+                    <input type="date" value={fechaVencimiento} onChange={(e) => setFechaVencimiento(e.target.value)} />
                   </div>
                   <div className="dato detallesProveedor">
                     <h3>Detalles del proveedor</h3>
-                    <input type="text" placeholder='Nombre del proveedor'/>
-                    <input type="text" placeholder='CUIT del proveedor'/>
+                    <input type="text" placeholder='Nombre del proveedor' value={emisorNombre} onChange={(e) => setEmisorNombre(e.target.value)} />
+                    <input type="text" placeholder='CUIT del proveedor' value={emisorCUIT} onChange={(e) => setEmisorCUIT(e.target.value)} />
                   </div>
               </div>
            </div>
@@ -318,7 +417,7 @@ const Facturas = () => {
                       <span>%</span>
                       <span className="obtenerValor"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" /></svg></span>
                     </div>
-                    <input type="number" placeholder='Monto' />
+                    <input type="text" placeholder="Monto" value={ivaMonto} onChange={(e) => setIvaMonto(e.target.value)} />
                   </div>
                   <div className="dato impuesto">
                     <h3>IIBB correspondiente</h3>
@@ -327,7 +426,7 @@ const Facturas = () => {
                       <span>%</span>
                       <span className="obtenerValor"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" /></svg></span>
                     </div>
-                    <input type="number" placeholder='Monto' />
+                    <input type="text" placeholder="Monto" value={IBBMonto} onChange={(e) => setIBBMonto(e.target.value)} />
                   </div>
                   <div className="dato impuesto">
                     <h3>Percepcion de IVA</h3>
@@ -336,7 +435,7 @@ const Facturas = () => {
                       <span>%</span>
                       <span className="obtenerValor"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" /></svg></span>
                     </div>
-                    <input type="number" placeholder='Monto' />
+                    <input type="text" placeholder="Monto" value={percepcionIVAMonto} onChange={(e) => setPercepcionIVAMonto(e.target.value)} />
                   </div>
                   <div className="dato impuesto">
                     <h3>Percepcion de IIBB</h3>
@@ -345,24 +444,74 @@ const Facturas = () => {
                       <span>%</span>
                       <span className="obtenerValor"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" /></svg></span>
                     </div>
-                    <input type="number" placeholder='Monto' />
+                    <input type="text" placeholder="Monto" value={percepcionIBBMonto} onChange={(e) => setPercepcionIBBMonto(e.target.value)} />
                   </div>
-                  {impuestosAgregados.map((impuesto, index) => (
-                  <div className="dato impuestoAgregado" key={index}>
-                    <input className='nombreImpuesto' type="text" placeholder='Nombre del impuesto' value={impuesto.nombreImpuesto} onChange={e => setImpuestosAgregados(prevImpuestos => prevImpuestos.map((imp, i) => i === index? {...imp, nombreImpuesto: e.target.value } : imp))} />
-                    <div className="inputTasa">
-                      <input type="number" value={impuesto.tasa} onChange={e => setImpuestosAgregados(prevImpuestos => prevImpuestos.map((imp, i) => i === index? {...imp, tasa: e.target.value } : imp))} />
-                      <span>%</span>
+                  {otrosImpuestos.map((impuesto, index) => (
+                    <div className="dato impuesto" key={index}>
+                      <input type="text" placeholder="nombre" value={impuesto.nombre} onChange={(e) => handleImpuestoChange(e, index, "nombre")} />
+                      <div className="inputTasa">
+                        <input type="number" placeholder="tasa" value={impuesto.tasa} onChange={(e) => handleImpuestoChange(e, index, "tasa")} />
+                        <span>%</span>
+                        <span className="obtenerValor"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" /></svg></span>
                     </div>
-                    <input type="number" placeholder='Monto' value={impuesto.monto} onChange={e => setImpuestosAgregados(prevImpuestos => prevImpuestos.map((imp, i) => i === index? {...imp, monto: e.target.value } : imp))} />
-                  </div>
+                      <input type="number" placeholder="monto" value={impuesto.monto} onChange={(e) => handleImpuestoChange(e, index, "monto")} />
+                    </div>
                   ))}
                   <div className="agregarImpuesto" onClick={agregarImpuesto}>
                       +
                   </div>
               </div>
            </div>
-
+          <div className="montosFactura seccionDatos">
+                  <h2>Montos de la factura</h2>
+                  <div className="datos">
+                    <div className="dato monto">
+                      <h3>Sub-Total</h3>
+                      <input type="text" placeholder="Monto" value={subtotal} onChange={(e) => setSubtotal(e.target.value)} />
+                    </div>
+                    <div className="dato monto">
+                      <h3>Total</h3>
+                      <input type="text" placeholder="Monto" value={total} onChange={(e) => setTotal(e.target.value)} />
+                    </div>
+                    <div className="dato monto">
+                      <h3>Total tras vencimiento</h3>
+                      <input type="number" placeholder='Monto' />
+                    </div>
+                  </div>
+          </div>
+          <div className="itemsFactura seccionDatos">
+            <h2>Items de la factura</h2>
+            <button onClick={handleAddItem}>Agregar Item</button>
+            <div className="datos">
+            {items.map((item, index) => (
+              <div className="dato item" key={index}>
+                <div className="cerrar" onClick={() => handleRemoveItem(index)}><h2>X</h2></div>
+                <h3>Codigo</h3>
+                <input type="text" value={item.codigo} onChange={(e) => handleItemChange(e, index, "codigo")} />
+                <h3>Descripcion</h3>
+                <input type="text" value={item.descripcion} onChange={(e) => handleItemChange(e, index, "descripcion")} />
+                <h3>Volumen Unidad</h3>
+                <input type="text" value={item.volumenUnidad + " " + item.medicionVolumen} onChange={(e) => handleItemChange(e, index, "volumenUnidad")} />
+                <h3>Cantidad de Unidades por Bulto</h3>
+                <input type="number" value={item.cantUnidadesBulto} onChange={(e) => handleItemChange(e, index, "cantUnidadesBulto")} />
+                <h3>Precio del Bulto</h3>
+                <input type="number" value={item.precioBulto} onChange={(e) => handleItemChange(e, index, "precioBulto")} />
+                <h3>Precio por Unidad</h3>
+                <input type="number" value={item.precioUnidad} onChange={(e) => handleItemChange(e, index, "precioUnidad")} />
+                <h3>Cantidad de Bultos</h3>
+                <input type="number" value={item.cantBultosItem} onChange={(e) => handleItemChange(e, index, "cantBultosItem")} />
+                <h3>Bonificacion</h3>
+                <div className="inputTasa">
+                        <input type="number" placeholder="tasa"  value={item.bonificacion} onChange={(e) => handleItemChange(e, index, "bonificacion")} />
+                        <span>%</span>
+                        <span className="obtenerValor"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" /></svg></span>
+                    </div>
+                <h3>Importe del Item</h3>
+                <input type="number" value={item.importeItem} onChange={(e) => handleItemChange(e, index, "importeItem")} />
+              </div>
+            ))}
+            </div>
+          </div>
            </div>
         </div>
       </div>
