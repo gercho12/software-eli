@@ -6,7 +6,6 @@ import axios from 'axios';
 function Dashboard() {
   const [anos, setAnos] = useState([]);
   const [añoSeleccionado, setAñoSeleccionado] = useState(2024);
-  const [intervaloSelector, setIntervaloSelector] = useState('mensual');
   const [intervalos, setIntervalos] = useState([]);
   const [facturasNoa, setFacturasNoa] = useState([]);
   const [seleccionadoIntervalo, setSeleccionadoIntervalo] = useState(null);
@@ -180,7 +179,7 @@ function Dashboard() {
           <div className="botones">
           <select
             className="selector selectorIntervalo"
-            value={intervaloSelector}
+            value={añoSeleccionado}
             onChange={(e) => setAñoSeleccionado(parseInt(e.target.value))}
             >
         {anos.map(ano => (

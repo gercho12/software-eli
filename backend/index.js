@@ -94,34 +94,79 @@ app.get('/proveedor', (req, res) => {
 // Ruta para insertar los datos en la tabla facturasregistradas
 app.put('/cargarFactura', (req, res) => {
   const datos = req.body;
-
   const sql = `
-    INSERT INTO facturasregistradas (
-      numeroFactura, tipoFactura, fechaEmision, fechaVencimiento,
-      proveedorEmisor, proveedorCuit, costoTotal, iva, estadoAbonado
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
+  INSERT INTO facturasregistradas (
+    numeroFactura, tipoFactura, fechaEmision, fechaVencimiento,
+    proveedorEmisor, proveedorCuit, costoTotal, estadoAbonado,
+    subtotal, IVAMonto, percepcionIVAMonto, percepcionIIBBMonto,
+    IIBBMonto, totalTrasVencimiento
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`;
 
-  const valores = [
-    datos.numeroFactura, 
-    datos.tipoFactura, 
-    new Date(datos.fechaEmision), // Convertir la fecha a objeto Date
-    new Date(datos.fechaVencimiento), // Convertir la fecha a objeto Date
-    datos.emisorNombre, 
-    datos.emisorCUIT, // Usar el CUIT limpio y numérico
-    datos.total, 
-    datos.ivaMonto, 
-    0 // Asumiendo que estadoAbonado inicialmente es 0 (no abonado)
-  ];
+const valores = [
+  datos.codigoFactura, // Asumiendo que datos.codigoFactura es en realidad datos.numeroFactura
+  datos.tipoFactura,
+  datos.fechaEmision, // Convertir la fecha a objeto Date si no lo está ya
+  datos.fechaVencimiento, // Convertir la fecha a objeto Date si no lo está ya
+  datos.emisor.nombre,
+  datos.emisor.CUIT,
+  datos.total,
+  0, // Asumiendo que estadoAbonado inicialmente es 0 (no abonado)
+  datos.subtotal,
+  datos.impuestos.IVAMonto,
+  datos.impuestos.percepcionIVAMonto,
+  datos.impuestos.percepcionIIBBMonto,
+  datos.impuestos.IIBBMonto,
+  datos.totalTrasVencimiento
+];
 
   db.query(sql, valores, (err, result) => {
     if (err) {
       console.error('Error al insertar la factura:', err);
       return res.status(500).json({ message: 'Error al insertar la factura', error: err.message });
     }
-    res.status(200).json({ message: 'Factura insertada correctamente' + datos.emisorCUIT,  });
-  });
+    const facturaId = result.insertId; // Obtener el ID de la factura insertada
+    res.status(200).json({ message: 'Factura insertada correctamente', facturaId: facturaId });  });
 });
+
+app.put('/cargarItems', (req, res) => {
+  const items = req.body;
+
+  const insertItemQuery = `
+    INSERT INTO detallesfacturas (
+      id_factura, Codigo, Descripcion, VolumenUnidad, MedicionVolumen,
+      UnidadesBulto, PrecioBulto, precioUnidad, Bultos, Bonificacion, importe
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  // Itera sobre los ítems y ejecuta la inserción en la base de datos para cada uno
+  items.forEach(async (item) => {
+    const itemValues = [
+      item.facturaId,
+      item.codigo,
+      item.descripcion,
+      item.volumenUnidad,
+      item.medicionVolumen,
+      item.cantUnidadesBulto,
+      item.precioBulto,
+      (item.precioBulto / item.cantUnidadesBulto),
+      item.cantBultosItem,
+      item.bonificacion,
+      item.importeItem
+    ];
+
+    try {
+      await db.query(insertItemQuery, itemValues);
+    } catch (error) {
+      console.error('Error al insertar el ítem:', error);
+      return res.status(500).json({ message: 'Error al insertar el ítem', error: error.message });
+    }
+    
+  });
+
+  res.status(200).json({ message: 'Ítems insertados correctamente' });
+}); 
+
 
   app.get('/facturasNoAbonadas', (req, res) => {
     const currentDate = new Date().toLocaleDateString('es-AR', { year: 'numeric', month: '2-digit', day: '2-digit' });
