@@ -2,6 +2,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
 import axios from 'axios';
 import fs from "fs";
+import path from "path";
+
 dotenv.config();
 
 // Access your API key as an environment variable (see "Set up your API key" above)
@@ -18,6 +20,8 @@ function fileToGenerativePart(path, mimeType) {
 }
 
 export async function run(filePath) {
+  if (filePath) {
+  const fileExtension = path.extname(filePath).substring(1); // Get file extension without the dot
 
     const systemInstruction = `Eres un asistente encargado de procesar facturas de manera exhaustiva y precisa, sin importar su formato, para extraer y estructurar los datos contenidos en ellas. Recibes archivos de factura en cualquier formato (PDF, imagen, Excel, etc.) y devuelves los datos en formato JSON para su inserción directa en una base de datos de gestión de facturas.
 
@@ -888,7 +892,7 @@ export async function run(filePath) {
     },
   });
 
-  const imagenUsuario = fileToGenerativePart(filePath, "image/jpg")
+  const imagenUsuario = fileToGenerativePart(filePath, `image/${fileExtension}`)
 
   // const history = await chat.getHistory();
   // const msgContent = { role: "user", parts: [{ text: "modo ultra-detallado" }, imagenUsuario] };
@@ -915,42 +919,14 @@ export async function run(filePath) {
           // Handle the parsing error appropriately
       }
   }
-    const datosInsertar = {
-    numeroFactura: jsonData.codigoFactura,
-    tipoFactura: jsonData.tipoFactura,
-    fechaEmision: jsonData.fechaEmision,
-    fechaVencimiento: jsonData.fechaVencimiento,
-    emisorNombre: jsonData.emisor.nombre,
-    emisorCUIT: jsonData.emisor.CUIT,
-    items: jsonData.items.map(item => ({
-      codigo: item.codigo,
-      descripcion: item.descripcion,
-      volumenUnidad: item.volumenUnidad,
-      medicionVolumen: item.medicionVolumen,
-      cantUnidadesBulto: item.cantUnidadesBulto,
-      precioBulto: item.precioBulto,
-      precioUnidad: item.precioUnidad,
-      cantBultosItem: item.cantBultosItem,
-      bonificacion: item.bonificacion,
-      importeItem: item.importeItem
-    })),
-    subtotal: jsonData.subtotal,
-    ivaMonto: jsonData.impuestos.IVA.monto,
-    percepcionIVAMonto: jsonData.impuestos.percepcionIVA.monto,
-    percepcionIBBMonto: jsonData.impuestos.perepcionIIBB.monto,
-    IBBMonto: jsonData.impuestos.IIBB.monto,
-    otrosImpuestos: jsonData.impuestos.otrosImpuestos.map(otroImpuesto => ({
-      nombre: otroImpuesto.nombre,
-      tasa: otroImpuesto.tasa,
-      monto: otroImpuesto.monto
-    })),
-    total: jsonData.total,
-    totalPorVencimiento: jsonData.totalPorVencimiento
-  };
+
 
 } catch (error) {
     console.error("An error occurred:", error);
   }
+fs.unlinkSync(filePath); 
+
+}
 }
 
 run();

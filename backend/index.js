@@ -187,7 +187,10 @@ WHERE estadoAbonado = 0 AND DATE_SUB(fechaVencimiento, INTERVAL 10 DAY) < CURDAT
     const ano = req.params.ano;
     const q = `SELECT MONTH(fechaEmision) as mes, 
     SUM(costoTotal) as egresos,
-    SUM(IVAMonto) as ivaTotal
+    SUM(IVAMonto) as ivaTotal,
+    SUM(PercepcionIvaMonto) as PercepcionIvaTotal,
+    SUM(IIBBMonto) as IIBBTotal,
+    SUM(PercepcionIIBBMonto) as PercepcionIIBBTotal
 FROM facturasregistradas 
 WHERE YEAR(fechaEmision) = ${ano} 
 GROUP BY MONTH(fechaEmision)`;

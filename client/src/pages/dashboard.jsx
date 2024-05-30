@@ -10,17 +10,25 @@ function Dashboard() {
   const [facturasNoa, setFacturasNoa] = useState([]);
   const [seleccionadoIntervalo, setSeleccionadoIntervalo] = useState(null);
   const [maximoEgreso, setMaximoEgreso] = useState(0);
+
   const [egresoSeleccionado, setEgresoSeleccionado] = useState(0);
   const [IvaSeleccionado, setIvaSeleccionado] = useState(0);
+  const [percepcionIvaSeleccionado, setPercepcionIvaSeleccionado] = useState(0);
+  const [IIBBSeleccionado, setIIBBSeleccionado] = useState(0);
+  const [percepcionIIBBSeleccionado, setPercepcionIIBBSeleccionado] = useState(0);
+
+  const [percepcionIvaAnterior, setPercepcionIvaAnterior] = useState(0);
+  const [IIBBAnterior, setIIBBAnterior] = useState(0);
+  const [percepcionIIBBAnterior, setPercepcionIIBBAnterior] = useState(0);
   const [egresoAnterior, setEgresoAnterior] = useState(0);
   const [ivaAnterior, setIvaAnterior] = useState(0);
+
+  const [porcentajepercepcionIva, setPorcentajePercepcionIva] = useState(0);
+  const [porcentajeIIBB, setPorcentajeIIBB] = useState(0);
+  const [porcentajePercepcioIIBB, setPorcentajePercepcionIIBB] = useState(0);
   const [porcentajeIva, setPorcentajeIva] = useState(0);
   const [porcentajeEgresos, setPorcentajeEgresos] = useState(0);
 
-  // const handleIntervaloClick = (intervalo, egresos, ingresos) => {
-  //   setSeleccionadoIntervalo(intervalo);
-  //   // Aquí puedes agregar cualquier lógica adicional que necesites al seleccionar un intervalo
-  // };
   useEffect(() => {
     const fetchFacturasNoa = async () => {
       try {
@@ -76,7 +84,7 @@ function Dashboard() {
           // setSeleccionadoIntervalo(facturas[facturas.length - 1].mes);
           // setEgresoSeleccionado(facturas[facturas.length - 1].egresos);
           // setIvaSeleccionado(facturas[facturas.length - 1].ivaTotal);
-          handleIntervaloClick(facturas[facturas.length - 1].mes, facturas[facturas.length - 1].egresos, facturas[facturas.length - 1].ivaTotal)
+          handleIntervaloClick(facturas[facturas.length - 1].mes, facturas[facturas.length - 1].egresos, facturas[facturas.length - 1].ivaTotal, facturas[facturas.length - 1].PercepcionIvaTotal, facturas[facturas.length - 1].IIBBTotal, facturas[facturas.length - 1].PercepcionIIBBTotal)
 
         }
         setIntervalos(facturas);
@@ -95,12 +103,15 @@ function Dashboard() {
     const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     return meses[numeroMes - 1];
   };
-
   // Manejar clic en el intervalo
-  const handleIntervaloClick = (mes, egresos, ivaTotal) => {
+  const handleIntervaloClick = (mes, egresos, ivaTotal, PercepcionIvaTotal, IIBBTotal, PercepcionIIBBTotal, ) => {
     setSeleccionadoIntervalo(mes);
     setEgresoSeleccionado(egresos);
     setIvaSeleccionado(ivaTotal);
+    setPercepcionIvaSeleccionado(PercepcionIvaTotal);
+    setIIBBSeleccionado(IIBBTotal);
+    setPercepcionIIBBSeleccionado(PercepcionIIBBTotal);
+
   
     // Find the index of the current interval
     const currentIndex = intervalos.findIndex(interval => interval.mes === mes);
@@ -110,9 +121,15 @@ function Dashboard() {
       const previousInterval = intervalos[currentIndex - 1];
       setEgresoAnterior(previousInterval.egresos);
       setIvaAnterior(previousInterval.ivaTotal);
-      console.log(egresos, ivaTotal)
+      setPercepcionIvaAnterior(previousInterval.PercepcionIvaTotal);
+      setIIBBAnterior(previousInterval.IIBBTotal);
+      setPercepcionIIBBAnterior(previousInterval.PercepcionIIBBTotal);
+      console.log(egresos, ivaTotal, PercepcionIvaTotal, IIBBTotal, PercepcionIIBBTotal)
       setPorcentajeEgresos(calcularPorcentaje(egresos, previousInterval.egresos))
       setPorcentajeIva(calcularPorcentaje(ivaTotal, previousInterval.ivaTotal))
+      setPorcentajePercepcionIva(calcularPorcentaje(PercepcionIvaTotal, previousInterval.PercepcionIvaTotal))
+      setPorcentajeIIBB(calcularPorcentaje(IIBBTotal, previousInterval.IIBBTotal))
+      setPorcentajePercepcionIIBB(calcularPorcentaje(PercepcionIIBBTotal, previousInterval.PercepcionIIBBTotal))
     }else{
       console.log(currentIndex)
     }
@@ -121,7 +138,7 @@ function Dashboard() {
   };
   // Calcular la ganancia total
   const calcularGananciaTotal = () => {
-    return egresoSeleccionado +IvaSeleccionado;
+    return egresoSeleccionado + IvaSeleccionado + percepcionIvaSeleccionado + IIBBSeleccionado + percepcionIIBBSeleccionado;
   };
 
     // Calcular la máxima ganancia
@@ -218,19 +235,24 @@ function Dashboard() {
                   <h3 className="subtitulo">Mes pasado <span className='procentaje' id='porcentajeEgreso'>{porcentajeEgresos}%</span></h3>
                 </div>
               </div>
-              <div className="ingresos targeta">
-                <div className="linkerInner">
-                  <div className="linker">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="#ffff" className="w-6 h-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
-                    </svg>
-                  </div>
+              <div className="impuestos targeta">
+                <div className="impuestoTargeta IVA">
+                  <h2 className="titulo">IVA cobrado</h2>
+                  <h3 className="numero">${IvaSeleccionado}</h3>
                 </div>
-                <h3 className="titulo">IVA cobrado</h3>
-                <div className="abajo">
-                  <h2 className="numero">${IvaSeleccionado}</h2>
-                  <h3 className="subtitulo">Mes pasado <span className='procentaje' id='porcentajeIva'>{porcentajeIva}%</span></h3>
+                <div className="impuestoTargeta IVA">
+                  <h2 className="titulo">Percepcion IVA</h2>
+                  <h3 className="numero">${percepcionIvaSeleccionado}</h3>
                 </div>
+                <div className="impuestoTargeta IVA">
+                  <h2 className="titulo">IIBB cobrado</h2>
+                  <h3 className="numero">${IIBBSeleccionado}</h3>
+                </div>
+                <div className="impuestoTargeta IVA">
+                  <h2 className="titulo">Percepcion IIBB</h2>
+                  <h3 className="numero">${percepcionIIBBSeleccionado}</h3>
+                </div>
+
               </div>
             </div>
             <div className="bottom">
@@ -238,7 +260,7 @@ function Dashboard() {
                 {/* <span className='gananciaTotal'>${calcularGananciaTotal()}</span> Ganancia */}
               </h3>
               <div className="grafico">
-                {intervalos.map(({ mes, egresos, ivaTotal }) => {
+                {intervalos.map(({ mes, egresos, ivaTotal, PercepcionIvaTotal, IIBBTotal, PercepcionIIBBTotal}) => {
                   const seleccionado = seleccionadoIntervalo === mes;
                   const porcentajeEgreso = (egresos / maximoEgreso) * 100;
                   console.log(porcentajeEgreso);
@@ -249,7 +271,7 @@ function Dashboard() {
                       intervalo={obtenerNombreMes(mes)}
                       porcentajeEgresos={porcentajeEgreso}
                       seleccionado={seleccionado}
-                      handleIntervaloClick={() => handleIntervaloClick(mes, egresos, ivaTotal)}
+                      handleIntervaloClick={() => handleIntervaloClick(mes, egresos, ivaTotal, PercepcionIvaTotal, IIBBTotal, PercepcionIIBBTotal)}
                     />
                   );
                 })}
