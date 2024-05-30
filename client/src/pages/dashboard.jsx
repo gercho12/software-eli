@@ -261,7 +261,7 @@ function Dashboard() {
                 <h2 className='tituloRight'>Facturas no abonadas <span className="cantFacturasNoa">{!facturasNoa ? "0" : facturasNoa.length}</span></h2>
                 <div className="facturasNoa">
                   {facturasNoa ?
-                   (facturasNoa.map(({id, costo, diferenciaDias}) => {
+                   (facturasNoa.map(({id, numeroFactura, costoTotal, diferenciaDias}) => {
                     return(
                       <div className="facturaNoa">
                       <div className="abonado boton" onClick={(e)=> guardarEstadoAbonado(id, 0, e)}>
@@ -269,8 +269,8 @@ function Dashboard() {
                           <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                         </svg>
                       </div>
-                      <h3>#{id}</h3>
-                      <h2>{costo} </h2>
+                      <h3 className='ellipsis'>#{numeroFactura}</h3>
+                      <h2 >{costoTotal} </h2>
                       <h2>{diferenciaDias >= 2 ? (diferenciaDias+" dias") : diferenciaDias === 1 ? (diferenciaDias+" dia") : ("vencido")} </h2>
                       <div className="masInfo boton">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

@@ -19,21 +19,21 @@ const Facturas = () => {
   const [emisorNombre, setEmisorNombre] = useState(null);
   const [emisorCUIT, setEmisorCUIT] = useState(null);
   const [items, setItems] = useState([]);
-  const [subtotal, setSubtotal] = useState(null);
-  const [ivaMonto, setIvaMonto] = useState(null);
-  const [percepcionIVAMonto, setPercepcionIVAMonto] = useState(null);
-  const [percepcionIBBMonto, setPercepcionIBBMonto] = useState(null);
-  const [IBBMonto, setIBBMonto] = useState(null);
+  const [subtotal, setSubtotal] = useState(0);
+  const [ivaMonto, setIvaMonto] = useState(0);
+  const [percepcionIVAMonto, setPercepcionIVAMonto] = useState(0);
+  const [percepcionIBBMonto, setPercepcionIBBMonto] = useState(0);
+  const [IBBMonto, setIBBMonto] = useState(0);
   const [otrosImpuestos, setOtrosImpuestos] = useState([]);
   const [impuestosAgregados, setImpuestosAgregados] = useState([]);
   const [facturaData, setFacturaData] = useState({});
-  const [total, setTotal] = useState(null);
-  const [totalVencimiento, setTotalVencimiento] = useState(null);
+  const [total, setTotal] = useState(0);
+  const [totalVencimiento, setTotalVencimiento] = useState(0);
   const [facturaObtenida, setFacturaObtenida] = useState([])
 
 
   const handleAddItem = () => {
-    setItems([...items, { codigo: "", descripcion: null, volumenUnidad: null, medicionVolumen:null, unidadesBulto: null, precioBulto: null, bultos: null, bonificacion: null, importe: null }]);
+    setItems([...items, { codigo: null, descripcion: null, volumenUnidad: null, medicionVolumen:null, cantUnidadesBulto: null, precioBulto: null, precioUnidad: null, cantBultosItem: null, importeItem: null }]);
   };
   const handleImpuestoChange = (e, index, key) => {
     const value = e.target.value;
@@ -148,6 +148,7 @@ const handleFileChange = async (event) => {
 };
 
 const guardarDatosFactura = async () => {
+  setModoCreacion(false)
     const dataFactura = {
       codigoFactura: numeroFactura,
       tipoFactura: tipoFactura,
@@ -181,13 +182,34 @@ const guardarDatosFactura = async () => {
             medicionVolumen: item.medicionVolumen,
             cantUnidadesBulto: item.cantUnidadesBulto,
             precioBulto: item.precioBulto,
-            cantBultosItem: item.cantBultosItem,
-            bonificacion: item.bonificacion,
-            importeItem: item.importe,
+            cantBultosItem: item.precioUnidad,
+            bonificacion: item.cantBultosItem/100,
+            importeItem: item.importeItem,
           };
         });
         try {
           const responseItems = await axios.put('http://localhost:8800/cargarItems', dataItems);
+          try {
+            const result = await axios.get('http://localhost:8800/facturas');
+            if (!Array.isArray(result.data) || result.data.length === 0) {
+              setFacturas(null);
+            } else {
+              const facturasConDiferencia = result.data.map(factura => {
+                const fechaVencimiento = new Date(factura.fechaVencimiento);
+                const fechaActual = new Date();
+                const diferenciaMilisegundos = fechaVencimiento - fechaActual;
+                const diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+    
+                // Agrega la propiedad "diferenciaDias" al objeto de la factura
+                return { ...factura, diferenciaDias };
+              });
+    
+              setFacturas(facturasConDiferencia);
+              console.log(facturasConDiferencia)
+            }
+          } catch (error) {
+            console.log(error);
+          }
         } catch (error) {
           console.log(error.response.data);
         }
@@ -273,7 +295,7 @@ const guardarDatosFactura = async () => {
     }
     console.log(itemsSeleccionados)
 
-    facturaSeleccionada == id ? setFacturaSeleccionada("") : setFacturaSeleccionada(id)
+    facturaSeleccionada === id ? setFacturaSeleccionada("") : setFacturaSeleccionada(id)
   }
 
   const handleBusqueda = (e) => {
@@ -320,14 +342,14 @@ const guardarDatosFactura = async () => {
     setEmisorNombre(null);
     setEmisorCUIT(null);
     setItems([]);
-    setSubtotal(null);
-    setIvaMonto(null);
-    setPercepcionIVAMonto(null);
-    setPercepcionIBBMonto(null);
-    setIBBMonto(null);
+    setSubtotal(0);
+    setIvaMonto(0);
+    setPercepcionIVAMonto(0);
+    setPercepcionIBBMonto(0);
+    setIBBMonto(0);
     setOtrosImpuestos([]);
-    setTotal(null);
-    setTotalVencimiento(null);
+    setTotal(0);
+    setTotalVencimiento(0);
   }
   const facturasOrdenadas = ordenarFacturas(facturasFiltradas);
   const handleModalBackgroundClick = (event) => {
@@ -363,6 +385,36 @@ const guardarDatosFactura = async () => {
   const cargarManual = () => {
     setModoSubir(false)
     setModoCreacion(true)
+  };
+
+  const handleDeleteFactura = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8800/facturasDelete/${id}`);
+      try {
+        const result = await axios.get('http://localhost:8800/facturas');
+        if (!Array.isArray(result.data) || result.data.length === 0) {
+          setFacturas(null);
+        } else {
+          const facturasConDiferencia = result.data.map(factura => {
+            const fechaVencimiento = new Date(factura.fechaVencimiento);
+            const fechaActual = new Date();
+            const diferenciaMilisegundos = fechaVencimiento - fechaActual;
+            const diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+
+            // Agrega la propiedad "diferenciaDias" al objeto de la factura
+            return { ...factura, diferenciaDias };
+          });
+
+          setFacturas(facturasConDiferencia);
+          console.log(facturasConDiferencia)
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } catch (error) {
+      console.log(error.response.data);
+    }
+    
   };
   return (
     <div className="app">
@@ -519,7 +571,7 @@ const guardarDatosFactura = async () => {
                 <input type="number" value={item.cantBultosItem} onChange={(e) => handleItemChange(e, index, "cantBultosItem")} />
                 <h3>Bonificacion</h3>
                 <div className="inputTasa">
-                        <input type="number" placeholder="tasa"  value={item.bonificacion * 100} onChange={(e) => handleItemChange(e, index, "bonificacion")} />
+                        <input type="number" placeholder="tasa" defaultValue={item.bonificacion * 100} onChange={(e) => handleItemChange(e, index, "bonificacion")} />
                         <span>%</span>
                         <span className="obtenerValor"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" /></svg></span>
                     </div>
@@ -556,61 +608,82 @@ const guardarDatosFactura = async () => {
 
           <div className="listaFacturas">
   {facturasOrdenadas.length > 0 ? (
-    facturasOrdenadas.map(({ id, tipoFactura, numeroFactura, fechaEmision, fechaVencimiento, proveedorEmisor, costoTotal, iva, estadoAbonado, diferenciaDias, items }) => {
-      const datos = { id, tipoFactura, numeroFactura, fechaEmision, fechaVencimiento, proveedorEmisor, costoTotal, iva, estadoAbonado, diferenciaDias }
-      const fechaEmisionCorrecta = fechaEmision ? fechaEmision.slice(0, 10) : "";
-      const fechaVencimientoCorrecta = fechaVencimiento ? fechaVencimiento.slice(0, 10) : "";
-      
-
+    facturasOrdenadas.map(({ id, tipoFactura, numeroFactura, fechaEmision, fechaVencimiento, proveedorEmisor, costoTotal, IVAMonto, percepcionIBBMonto, IIBBMonto, percepcionIVAMonto, estadoAbonado, otrosImpuestos, diferenciaDias, items }) => {
+      const datos = { id, tipoFactura, numeroFactura, fechaEmision, fechaVencimiento, proveedorEmisor, costoTotal, IVAMonto, percepcionIBBMonto, IIBBMonto, percepcionIVAMonto, estadoAbonado, otrosImpuestos, diferenciaDias }
+      const fechaEmisionCorrecta = new Date(fechaEmision).toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' });      
+      const fechaVencimientoCorrecta = new Date(fechaVencimiento).toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' });
       return (
         <div className="factura" key={id}>
-          <div className={facturaSeleccionada == id ? "topFactura selected" : "topFactura"}>
+          <div className={facturaSeleccionada === id ? "topFactura selected" : "topFactura"}>
             <h2 onClick={() => seleccionFactura(id)}>#{numeroFactura}</h2>
-            {facturaSeleccionada == id ? (
+            {facturaSeleccionada === id ? (
               <div className="data" onClick={() => seleccionFactura(id)}>
-                <h3 className="dato">Tipo de factura: <span>{tipoFactura}</span></h3>
-                <h3 className="dato">Proveedor: <span>{proveedorEmisor}</span></h3>
-                <h3 className="dato">Costo total: <span>${costoTotal}</span></h3>
-                <h3 className="dato">IVA: <span>${iva}</span></h3>
-                <h3 className="dato">Emision: <span>{fechaEmisionCorrecta}</span></h3>
-                <h3 className="dato">Vencimiento: <span>{fechaVencimientoCorrecta}</span></h3>
-                <h3 className="dato datoAbonado" onClick={(e) => guardarEstadoAbonado(id, estadoAbonado, e)}>Estado: <span className={estadoAbonado == 0 ? "" : "abonado"}>{estadoAbonado == 0 ? "No abonado" : "Abonado"}</span></h3>
+                <div className="seccionesDatos">
+                  <div className="seccionDatos detallesFactura">
+                    <h2 className='tituloSeccionDatos'>Detalles factura</h2>
+                    <div className="datos">
+                      <h3 className="dato">Tipo de factura: <span>{tipoFactura}</span></h3>
+                      <h3 className="dato">Costo total: <span>${costoTotal}</span></h3>
+                      <h3 className="dato">Emision: <span>{fechaEmisionCorrecta}</span></h3>
+                      <h3 className="dato">Vencimiento: <span>{fechaVencimientoCorrecta}</span></h3>
+                      <h3 className="dato">Proveedor: <span>{proveedorEmisor}</span></h3>
+                      
+                      <h3 className="dato datoAbonado" onClick={(e) => guardarEstadoAbonado(id, estadoAbonado, e)}>Estado: <span className={estadoAbonado == 0 ? "" : "abonado"}>{estadoAbonado == 0 ? "No abonado" : "Abonado"}</span></h3>
 
+                    </div>
+                  </div>
+                  <div className="seccionDatos impuestosFactura">
+                    <h2 className='tituloSeccionDatos'>Impuestos y retenciones</h2>
+                    <div className="datos">
+                      <h3 className="dato">IVA: <span>${IVAMonto}</span></h3>
+                      <h3 className="dato">Percepcion de IVA: <span>${percepcionIVAMonto}</span></h3>
+                      <h3 className="dato">Ingresos Brutos: <span>${IIBBMonto}</span></h3>
+                      <h3 className="dato">Percepcion de ingresos brutos: <span>${percepcionIBBMonto}</span></h3>
+                      {
+                        otrosImpuestos.split(';').filter(impuesto => impuesto!== '').map((impuesto, index) => {
+                          const [nombreImpuesto, montoImpuesto] = impuesto.split(',');
+                          return (
+                            <h3 key={index} className="dato">
+                              {nombreImpuesto}: <span>${montoImpuesto}</span>
+                            </h3>
+                          );
+                        })
+                      }
+
+                    </div>
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="data" onClick={() => seleccionFactura(id)}>
                 <h3 className="dato">Tipo de factura: <span>{tipoFactura}</span></h3>
                 <h3 className="dato">Proveedor: <span>{proveedorEmisor}</span></h3>
                 <h3 className="dato">Costo total: <span>${costoTotal}</span></h3>
-                <h3 className="dato">IVA: <span>${iva}</span></h3>
                 <h3 className="dato vencimiento">Vencimiento: <span className={diferenciaDias < 10 && estadoAbonado == 0 ? "cercano" : ""}>{diferenciaDias} dias</span></h3>
               </div>
             )}
-            {facturaSeleccionada == id ? (
+            {facturaSeleccionada === id ? (
               <div className="buttons">
-                <>
-                  <button>🚮</button>
-                  <button>🖋️</button>
-                </>
+                  <button onClick={() => handleDeleteFactura(id)} ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6"><path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg></button>
               </div>
             ) : (
               <div onClick={(e) => guardarEstadoAbonado(id, estadoAbonado, e)} className={estadoAbonado == 0 ? "estadoAbonado" : "estadoAbonado abonado"}></div>
             )}
           </div>
-          <div className={facturaSeleccionada == id ? "facturaItems selected" : "facturaItems"}>
+          <div className={facturaSeleccionada === id? "facturaItems selected" : "facturaItems"}>
             <h2>Items:</h2>
-            {itemsSeleccionados && itemsSeleccionados.length > 0 ? (
-              itemsSeleccionados.map(({ id, id_factura, Codigo, Descripcion, VolumenUnidad, UnidadesBulto, PrecioBulto, Bultos, Bonificacion, Importe }) => {
+            {itemsSeleccionados && itemsSeleccionados.length > 0? (
+              itemsSeleccionados.map(({ id, id_factura, Codigo, Descripcion, VolumenUnidad, MedicionVolumen, UnidadesBulto, PrecioBulto, precioUnidad, Bultos, Bonificacion, Importe }) => {
                 return (
                   <div className="item" key={id}>
-                    <h3 className="dato">Codigo: <span>{Codigo}</span></h3>
-                    <h3 className="dato">Descripcion: <span>{Descripcion}</span></h3>
-                    <h3 className="dato">Volumen unidad: <span>{VolumenUnidad}</span></h3>
-                    <h3 className="dato">Unidades bulto: <span>{UnidadesBulto}</span></h3>
-                    <h3 className="dato">Precio bulto: <span>${PrecioBulto} </span></h3>
-                    <h3 className="dato">Bultos: <span>{Bultos} </span></h3>
-                    <h3 className="dato">Bonificacion: <span>{Bonificacion}% </span></h3>
-                    <h3 className="dato">Importe: <span>${Importe} </span></h3>
+                    {Codigo && <h3 className="dato">Codigo: <span>{Codigo}</span></h3>}
+                    {Descripcion && <h3 className="dato">Descripcion: <span>{Descripcion}</span></h3>}
+                    {VolumenUnidad && MedicionVolumen && <h3 className="dato">Volumen unidad: <span>{VolumenUnidad + " " + MedicionVolumen}</span></h3>}
+                    {UnidadesBulto && <h3 className="dato">Unidades bulto: <span>{UnidadesBulto}</span></h3>}
+                    {PrecioBulto && <h3 className="dato">Precio bulto: <span>${PrecioBulto} </span></h3>}
+                    {Bultos && <h3 className="dato">Bultos: <span>{Bultos} </span></h3>}
+                    {(Bonificacion || Bonificacion !== 0) && <h3 className="dato">Bonificacion: <span>{Bonificacion*100}% </span></h3>}
+                    {Importe && <h3 className="dato">Importe: <span>${Importe} </span></h3>}
                   </div>
                 );
               })

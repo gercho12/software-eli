@@ -99,8 +99,8 @@ app.put('/cargarFactura', (req, res) => {
     numeroFactura, tipoFactura, fechaEmision, fechaVencimiento,
     proveedorEmisor, proveedorCuit, costoTotal, estadoAbonado,
     subtotal, IVAMonto, percepcionIVAMonto, percepcionIIBBMonto,
-    IIBBMonto, totalTrasVencimiento
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    IIBBMonto, otrosImpuestos, totalTrasVencimiento
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `;
 
 const valores = [
@@ -117,6 +117,7 @@ const valores = [
   datos.impuestos.percepcionIVAMonto,
   datos.impuestos.percepcionIIBBMonto,
   datos.impuestos.IIBBMonto,
+  datos.impuestos.otrosImpuestos,
   datos.totalTrasVencimiento
 ];
 
@@ -173,23 +174,20 @@ app.put('/cargarItems', (req, res) => {
   
     const q = `
     SELECT *
-    FROM facturasregistradas 
-    WHERE estadoAbonado = 0 AND fechaVencimiento - CURDATE() < 10;
-    
-    
-    `;
+FROM facturasregistradas
+WHERE estadoAbonado = 0 AND DATE_SUB(fechaVencimiento, INTERVAL 10 DAY) < CURDATE();`;
   
     db.query(q, [currentDate], (err, data) => {
       if (err) return res.json(err);
       return res.json(data);
     });
-  });
+  }); 
   app.get('/facturas/:ano', (req, res) => {
 
     const ano = req.params.ano;
     const q = `SELECT MONTH(fechaEmision) as mes, 
     SUM(costoTotal) as egresos,
-    SUM(iva) as ivaTotal
+    SUM(IVAMonto) as ivaTotal
 FROM facturasregistradas 
 WHERE YEAR(fechaEmision) = ${ano} 
 GROUP BY MONTH(fechaEmision)`;
@@ -277,7 +275,7 @@ app.post('/proveedor/creacion', (req, res) => {
   });
 
   app.delete('/proveedor/eliminar/:cuit', (req, res) => {
-    const id = req.params.id;
+    const cuit = req.params.cuit;
     console.log(cuit);
 
     const q = 'DELETE FROM `proveedor` WHERE `proveedor`.`cuit` = ?';
@@ -291,7 +289,32 @@ app.post('/proveedor/creacion', (req, res) => {
       }
     });
   });
+ 
+  app.delete('/facturasDelete/:id', (req, res) => {
+    const id = parseInt(req.params.id);
   
+    console.log(id);
+    const q1 = 'DELETE FROM detallesfacturas WHERE id_factura =?';
+    db.query(q1, [id], (err, results) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ err });
+      } else {
+        console.log(results);
+        const q2 = 'DELETE FROM facturasregistradas WHERE id =?';
+        db.query(q2, [id], (err, results) => {
+          if (err) {
+            console.error(err);
+            res.status(500).json({ err });
+          } else {
+            console.log(results);
+            res.status(200).json({ message: 'Factura eliminada correctamente', data: results });
+          }
+        });
+      }
+    });
+  });
+
 
 
   app.post('/process-invoice', async (req, res) => {

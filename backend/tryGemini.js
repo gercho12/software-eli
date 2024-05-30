@@ -49,7 +49,7 @@ export async function run(filePath) {
         "cantidadBultos": 2,
         "precioBulto": 1000,
         "importeItem": 2000,
-        "bonificacion": 0
+        "bonificacion": 0.00
         }
         ],
         "subtotal": 30200.84,
@@ -94,7 +94,7 @@ export async function run(filePath) {
       "precioBulto": 1000,
       "precioUnidad": 83.33,
       "cantBultosItem: 2,
-      "bonificación": 0,
+      "bonificación": 0.00,
       "importeItem": 2000
     }
     
