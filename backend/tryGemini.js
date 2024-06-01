@@ -159,7 +159,7 @@ export async function run(filePath) {
       "direccion": "BOLIVAR 402",
       "telefono": null,
       "email": null,
-      "CUIT": "30-71602726-7"
+      "CUIT": "30716027267"
     },
     "items": [
       {
@@ -319,7 +319,7 @@ export async function run(filePath) {
       "direccion": "AV. DEL LIBERTADOR 8520 CABA",
       "telefono": "1121814591",
       "email": null,
-      "CUIT": "30-71635628-7"
+      "CUIT": "30716356287"
     },
     "receptor": {
       "nombre": "CREANDO PAN S.A",
@@ -394,7 +394,7 @@ export async function run(filePath) {
       "direccion": "MIGUEL ANGEL 5495 VILLA BOSCH Buenos Aires",
       "telefono": null,
       "email": null,
-      "CUIT": "30-71602726-7"
+      "CUIT": "30716027267"
     },
     "items": [
       {
@@ -494,14 +494,14 @@ export async function run(filePath) {
       "direccion": "TERESA MASTELLONE 3367 GENERAL RODRIGUEZ BUENOS AIRES",
       "telefono": null,
       "email": null,
-      "CUIT": "30-70721038-5"
+      "CUIT": "30707210385"
     },
     "receptor": {
       "nombre": "CREANDO PAN S.A.",
       "direccion": "MIGUEL ANGEL 5495",
       "telefono": null,
       "email": null,
-      "CUIT": "30-71602726-7"
+      "CUIT": "30716027267"
     },
     "items": [
       {
@@ -566,7 +566,7 @@ export async function run(filePath) {
       "direccion": "Dardo Rocha 2324 - (B1640FTF) Martínez Pcia. de Buenos Aires",
       "telefono": "+54 (011) 3220-0154",
       "email": "ventas@alyser.com",
-      "CUIT": "30-70776023-7"
+      "CUIT": "30707760237"
     },
     "receptor": {
       "nombre": "CREANDO PAN S.A",
@@ -688,7 +688,7 @@ export async function run(filePath) {
   const factura6 = fileToGenerativePart("facturasEntrenamiento/factura6.jpeg", "image/jpg")
   const factura6Response = `
   {
-    "codigoFactura": null,
+    "codigoFactura": 9684,
     "tipoFactura": null,
     "fechaEmision": "25-05-2024",
     "fechaVencimiento": null,
@@ -824,10 +824,247 @@ export async function run(filePath) {
       ]
     },
     "total": 16086.27,
-    "totalTrasVencimiento": 16086.27
+    "totalTrasVencimiento": 16767.85
   }
-  
   `
+  const factura8 = fileToGenerativePart("facturasEntrenamiento/factura8.jpeg", "image/jpeg")
+  const factura8Response = `
+  {
+    "codigoFactura": "2874",
+    "tipoFactura": null,
+    "fechaEmision": "17-05-2024",
+    "fechaVencimiento": null,
+    "emisor": {
+        "nombre": null,
+        "direccion": null,
+        "telefono": null,
+        "email": null,
+        "CUIT": null
+    },
+    "receptor": {
+        "nombre": "CREANDO PAN SA.",
+        "direccion": "BOLIVAR 402",
+        "telefono": null,
+        "email": null,
+        "CUIT": "30716027267"
+    },
+    "items": [
+        {
+            "codigo": "B4050C",
+            "descripcion": "CAMISETA 40 X 50 AD. - CHIANG",
+            "volumenUnidad": null,
+            "medicionVolumen": null,
+            "cantUnidadesBulto": 100,
+            "precioBulto": 1501.76,
+            "precioUnidad": 15.01,
+            "cantBultosItem": 20,
+            "bonificacion": 0,
+            "importeItem": 30035.2
+        },
+        {
+            "codigo": "PH",
+            "descripcion": "PAPEL HIGIENICO \"ECO\"",
+            "volumenUnidad": null,
+            "medicionVolumen": null,
+            "cantUnidadesBulto": 8,
+            "precioBulto": 7927.35,
+            "precioUnidad": 990.92,
+            "cantBultosItem": 1,
+            "bonificacion": 0,
+            "importeItem": 7927.35
+        },
+        {
+            "codigo": "SC",
+            "descripcion": "X.CINTA ADHESIVA 24 MM X 40 MTS",
+            "volumenUnidad": null,
+            "medicionVolumen": null,
+            "cantUnidadesBulto": 1,
+            "precioBulto": 550,
+            "precioUnidad": 550,
+            "cantBultosItem": 5,
+            "bonificacion": 0,
+            "importeItem": 2750
+        }
+    ],
+    "subtotal": null,
+    "impuestos": {
+        "IVA": {
+            "tasa": null,
+            "monto": null
+        },
+        "percepcionIVA": {
+            "tasa": null,
+            "monto": null
+        },
+        "perepcionIIBB": {
+            "tasa": null,
+            "monto": null
+        },
+        "IIBB": {
+            "tasa": null,
+            "monto": null
+        },
+        "otrosImpuestos": []
+    },
+    "total": 40712.55,
+    "totalTrasVencimiento": 40712.55
+}`;
+
+const factura9 = fileToGenerativePart("facturasEntrenamiento/factura9.jpeg", "image/jpeg")
+const factura9Response = `
+{
+  "codigoFactura": "000300000907X",
+  "tipoFactura": null,
+  "fechaEmision": "16-05-2024",
+  "fechaVencimiento": null,
+  "emisor": {
+      "nombre": "MARTIN CORONADO",
+      "direccion": null,
+      "telefono": "112010049",
+      "email": null,
+      "CUIT": null
+  },
+  "receptor": {
+      "nombre": "CONFITERIA LA ROSA",
+      "direccion": "MIGUEL ANGEL 5495 VILLA BOSCH",
+      "telefono": null,
+      "email": null,
+      "CUIT": null
+  },
+  "items": [
+      {
+          "codigo": null,
+          "descripcion": "COCA COLA Sabor Original",
+          "volumenUnidad": 0.5,
+          "medicionVolumen": "Litros",
+          "cantUnidadesBulto": 1,
+          "precioBulto": 44500,
+          "precioUnidad": 44500,
+          "cantBultosItem": 2,
+          "bonificacion": 0,
+          "importeItem": 89000
+      },
+      {
+          "codigo": null,
+          "descripcion": "COCA COLA zero",
+          "volumenUnidad": 0.5,
+          "medicionVolumen": "Litros",
+          "cantUnidadesBulto": 1,
+          "precioBulto": 44500,
+          "precioUnidad": 44500,
+          "cantBultosItem": 2,
+          "bonificacion": 0,
+          "importeItem": 89000
+      },
+      {
+          "codigo": null,
+          "descripcion": "FANTA",
+          "volumenUnidad": 0.6,
+          "medicionVolumen": "Litros",
+          "cantUnidadesBulto": 1,
+          "precioBulto": 24400,
+          "precioUnidad": 24400,
+          "cantBultosItem": 2,
+          "bonificacion": 0,
+          "importeItem": 48800
+      },
+      {
+          "codigo": null,
+          "descripcion": "BAGGIO FRESH MANZANA",
+          "volumenUnidad": 0.6,
+          "medicionVolumen": "Litros",
+          "cantUnidadesBulto": 1,
+          "precioBulto": 5770.01,
+          "precioUnidad": 5770.01,
+          "cantBultosItem": 1,
+          "bonificacion": 0,
+          "importeItem": 5770.01
+      },
+      {
+          "codigo": null,
+          "descripcion": "BAGGIO FRESH NARANJA",
+          "volumenUnidad": 0.6,
+          "medicionVolumen": "Litros",
+          "cantUnidadesBulto": 1,
+          "precioBulto": 5770.01,
+          "precioUnidad": 5770.01,
+          "cantBultosItem": 1,
+          "bonificacion": 0,
+          "importeItem": 5770.01
+      },
+      {
+          "codigo": null,
+          "descripcion": "BAGGIO FRESH POMELO",
+          "volumenUnidad": 0.6,
+          "medicionVolumen": "Litros",
+          "cantUnidadesBulto": 1,
+          "precioBulto": 5770.01,
+          "precioUnidad": 5770.01,
+          "cantBultosItem": 1,
+          "bonificacion": 0,
+          "importeItem": 5770.01
+      },
+      {
+        "codigo": null,
+        "descripcion": "BAGGIO Pronto -Manzana",
+        "volumenUnidad": 0.2,
+        "medicionVolumen": Litros,
+        "cantUnidadesBulto": 18,
+        "precioBulto": 5770.01,
+        "precioUnidad": 320.56,
+        "cantBultosItem": 1,
+        "bonificacion": 0,
+        "importeItem": 5770.01
+      },
+      {
+          "codigo": null,
+          "descripcion": "BAGGIO Pronto -Multifruta-",
+          "volumenUnidad": 0.2,
+          "medicionVolumen": Litros,
+          "cantUnidadesBulto": 18,
+          "precioBulto": 5770.01,
+          "precioUnidad": 320.56,
+          "cantBultosItem": 1,
+          "bonificacion": 0,
+          "importeItem": 5770.01
+      },
+      {
+          "codigo": null,
+          "descripcion": "BAGGIO Pronto -Naranja-",
+          "volumenUnidad": 0.2,
+          "medicionVolumen": Litros,
+          "cantUnidadesBulto": 18,
+          "precioBulto": 5770.01,
+          "precioUnidad": 320.56,
+          "cantBultosItem": 1,
+          "bonificacion": 0,
+          "importeItem": 5770.01
+      }
+  ],
+  "subtotal": null,
+  "impuestos": {
+      "IVA": {
+          "tasa": null,
+          "monto": null
+      },
+      "percepcionIVA": {
+          "tasa": null,
+          "monto": null
+      },
+      "perepcionIIBB": {
+          "tasa": null,
+          "monto": null
+      },
+      "IIBB": {
+          "tasa": null,
+          "monto": null
+      },
+      "otrosImpuestos": []
+  },
+  "total": 514330.03,
+  "totalTrasVencimiento": 514330.03
+}
+`;
   const chat = model.startChat({
     history: [
       {
@@ -878,7 +1115,7 @@ export async function run(filePath) {
         role: "model",
         parts: [{ text: factura6Response }],
       },
-             {
+      {
         role: "user",
         parts: [{ text: "modo ultra-detallado"}, factura7],
       },
@@ -886,10 +1123,23 @@ export async function run(filePath) {
         role: "model",
         parts: [{ text: factura7Response }],
       },
-    ],
-    generationConfig: {
-      maxOutputTokens: 5000,
-    },
+      {
+        role: "user",
+        parts: [{ text: "modo ultra-detallado"}, factura8],
+      },
+      {
+        role: "model",
+        parts: [{ text: factura8Response }],
+      },
+      {
+        role: "user",
+        parts: [{ text: "modo ultra-detallado"}, factura9],
+      },
+      {
+        role: "model",
+        parts: [{ text: factura9Response }],
+      }
+    ]
   });
 
   const imagenUsuario = fileToGenerativePart(filePath, `image/${fileExtension}`)
