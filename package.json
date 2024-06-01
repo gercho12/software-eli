@@ -5,11 +5,10 @@
       "install-client": "cd client && npm install",
       "install-backend": "cd backend && npm install",
       "build-client": "cd client && npm run build",
-      "start-backend": "cd backend && node index.mjs",
+      "start-backend": "cd backend && npm install && node index.mjs",
       "build": "npm run build-client",
-      "start": "npm run build-client && npm run start-backend"
+      "start": "npm run start-backend"
     },
-    "dependencies": {
-    }
+    "dependencies": {}
   }
   
