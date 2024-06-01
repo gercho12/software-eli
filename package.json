@@ -1,0 +1,15 @@
+{
+    "name": "Software-facturcion",
+    "version": "1.0.0",
+    "scripts": {
+      "install-client": "cd client && npm install",
+      "install-backend": "cd backend && npm install",
+      "build-client": "cd client && npm run build",
+      "start-backend": "cd backend && node index.mjs",
+      "build": "npm run build-client",
+      "start": "npm run build-client && npm run start-backend"
+    },
+    "dependencies": {
+    }
+  }
+  

@@ -1,11 +1,11 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.mjs",
   "type": "module",
   "scripts": {
     "test": "echo \"Errnor: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "node index.mjs"
   },
   "keywords": [],
   "author": "",
