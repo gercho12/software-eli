@@ -17,7 +17,6 @@ const Proveedores = () => {
   const [modoCreacion, setModoCreacion] = useState(false);
   const [modoEdicion, setModoEdicion] = useState([false, ""]);
   const [valorNota, setValorNota] = useState('');
-  const [idEliminar, setIdEliminar] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {

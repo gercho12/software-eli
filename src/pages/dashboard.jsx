@@ -17,16 +17,8 @@ function Dashboard() {
   const [IIBBSeleccionado, setIIBBSeleccionado] = useState(0);
   const [percepcionIIBBSeleccionado, setPercepcionIIBBSeleccionado] = useState(0);
 
-  const [percepcionIvaAnterior, setPercepcionIvaAnterior] = useState(0);
-  const [IIBBAnterior, setIIBBAnterior] = useState(0);
-  const [percepcionIIBBAnterior, setPercepcionIIBBAnterior] = useState(0);
   const [egresoAnterior, setEgresoAnterior] = useState(0);
-  const [ivaAnterior, setIvaAnterior] = useState(0);
 
-  const [porcentajepercepcionIva, setPorcentajePercepcionIva] = useState(0);
-  const [porcentajeIIBB, setPorcentajeIIBB] = useState(0);
-  const [porcentajePercepcioIIBB, setPorcentajePercepcionIIBB] = useState(0);
-  const [porcentajeIva, setPorcentajeIva] = useState(0);
   const [porcentajeEgresos, setPorcentajeEgresos] = useState(0);
 
   useEffect(() => {
@@ -120,16 +112,8 @@ function Dashboard() {
     if (currentIndex > 0) {
       const previousInterval = intervalos[currentIndex - 1];
       setEgresoAnterior(previousInterval.egresos);
-      setIvaAnterior(previousInterval.ivaTotal);
-      setPercepcionIvaAnterior(previousInterval.PercepcionIvaTotal);
-      setIIBBAnterior(previousInterval.IIBBTotal);
-      setPercepcionIIBBAnterior(previousInterval.PercepcionIIBBTotal);
       console.log(egresos, ivaTotal, PercepcionIvaTotal, IIBBTotal, PercepcionIIBBTotal)
       setPorcentajeEgresos(calcularPorcentaje(egresos, previousInterval.egresos))
-      setPorcentajeIva(calcularPorcentaje(ivaTotal, previousInterval.ivaTotal))
-      setPorcentajePercepcionIva(calcularPorcentaje(PercepcionIvaTotal, previousInterval.PercepcionIvaTotal))
-      setPorcentajeIIBB(calcularPorcentaje(IIBBTotal, previousInterval.IIBBTotal))
-      setPorcentajePercepcionIIBB(calcularPorcentaje(PercepcionIIBBTotal, previousInterval.PercepcionIIBBTotal))
     }else{
       console.log(currentIndex)
     }
