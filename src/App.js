@@ -12,7 +12,7 @@ function App() {
         <Route path="/" element={<Dashboard/>} />
         <Route path="/navbar" element={<Navbar/>} />
         <Route path="/proveedores" element={<Proveedores/>} />
-        <Route path="/facturas" element={<Facturas/>} /> 
+        <Route path="/registroFacturas" element={<Facturas/>} /> 
       </Routes>
     </BrowserRouter>
   );
