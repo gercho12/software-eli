@@ -74,7 +74,7 @@ const handleFileChange = async (event) => {
     formData.append('invoice', file);
 
     try {
-      const response = await axios.post('https://sistema-facturas-api.onrender.com/process-invoice', formData, {
+      const response = await axios.post('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/process-invoice', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -171,7 +171,7 @@ const guardarDatosFactura = async () => {
     }
 
     try {
-      const responseFactura = await axios.put('https://sistema-facturas-api.onrender.com/cargarFactura', dataFactura);
+      const responseFactura = await axios.put('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/cargarFactura', dataFactura);
       console.log(responseFactura)
         const dataItems = items.map((item, index) => {
           return {
@@ -188,9 +188,9 @@ const guardarDatosFactura = async () => {
           };
         });
         try {
-          const responseItems = await axios.put('https://sistema-facturas-api.onrender.com/cargarItems', dataItems);
+          const responseItems = await axios.put('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/cargarItems', dataItems);
           try {
-            const result = await axios.get('https://sistema-facturas-api.onrender.com/facturas');
+            const result = await axios.get('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/facturas');
             if (!Array.isArray(result.data) || result.data.length === 0) {
               setFacturas(null);
             } else {
@@ -223,7 +223,7 @@ const guardarDatosFactura = async () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get('https://sistema-facturas-api.onrender.com/facturas');
+        const result = await axios.get('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/facturas');
         if (!Array.isArray(result.data) || result.data.length === 0) {
           setFacturas(null);
         } else {
@@ -254,9 +254,9 @@ const guardarDatosFactura = async () => {
     const estadoAbonado = estadoAbonadoAntiguo === 0 ? 1 : 0;
     console.log(estadoAbonado);
     try {
-      await axios.put(`https://sistema-facturas-api.onrender.com/actualizarFactura/${id}/${estadoAbonado}`);
+      await axios.put(`http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/actualizarFactura/${id}/${estadoAbonado}`);
       try {
-        const result = await axios.get('https://sistema-facturas-api.onrender.com/facturas');
+        const result = await axios.get('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/facturas');
         if (!Array.isArray(result.data) || result.data.length === 0) {
           setFacturas(null);
         } else {
@@ -284,7 +284,7 @@ const guardarDatosFactura = async () => {
   const seleccionFactura = async (id) => {
     console.log(id)
     try {
-      const result = await axios.get(`https://sistema-facturas-api.onrender.com/items/${id}`);
+      const result = await axios.get(`http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/items/${id}`);
       if (!Array.isArray(result.data) || result.data.length === 0) {
         setItemsSeleccionados(null);
       } else {
@@ -389,9 +389,9 @@ const guardarDatosFactura = async () => {
 
   const handleDeleteFactura = async (id) => {
     try {
-      await axios.delete(`https://sistema-facturas-api.onrender.com/facturasDelete/${id}`);
+      await axios.delete(`http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/facturasDelete/${id}`);
       try {
-        const result = await axios.get('https://sistema-facturas-api.onrender.com/facturas');
+        const result = await axios.get('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/facturas');
         if (!Array.isArray(result.data) || result.data.length === 0) {
           setFacturas(null);
         } else {

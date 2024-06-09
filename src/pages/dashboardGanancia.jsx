@@ -22,7 +22,7 @@ function Dashboard() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`https://sistema-facturas-api.onrender.com/intervalos?intervalo=${intervaloSelector}`);
+      const response = await axios.get(`http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/intervalos?intervalo=${intervaloSelector}`);
       setIntervalos(response.data);
       console.log(response.data)
     } catch (error) {

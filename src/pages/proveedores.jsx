@@ -21,7 +21,7 @@ const Proveedores = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get('https://sistema-facturas-api.onrender.com/proveedor');
+        const result = await axios.get('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/proveedor');
         setProveedores(result.data);
         console.log(result)
       } catch (error) {
@@ -76,9 +76,9 @@ const Proveedores = () => {
       nota: valorNota,
     };
     try {
-      await axios.put(`https://sistema-facturas-api.onrender.com/proveedor/${seleccionadoProveedor.cuit}`, datosActualizados);
+      await axios.put(`http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/proveedor/${seleccionadoProveedor.cuit}`, datosActualizados);
       // Update the proveedores state with the new data
-      const result = await axios('https://sistema-facturas-api.onrender.com/proveedor');
+      const result = await axios('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/proveedor');
       setProveedores(result.data);
       setSeleccionadoProveedor(datosActualizados)
     } catch (error) {
@@ -98,9 +98,9 @@ const Proveedores = () => {
     console.log(datosColocados);
   
     try {
-      const response = await axios.post('https://sistema-facturas-api.onrender.com/proveedor/creacion', datosColocados);
+      const response = await axios.post('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/proveedor/creacion', datosColocados);
       console.log(response.data); // Verifica la respuesta del servidor en la consola
-      const result = await axios.get('https://sistema-facturas-api.onrender.com/proveedor');
+      const result = await axios.get('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/proveedor');
       setProveedores(result.data);
     } catch (error) {
       console.log(error.response.data);
@@ -120,9 +120,9 @@ const Proveedores = () => {
   const handleEliminar = async (cuitEliminar) => {
   
     try {
-      const response = await axios.delete(`https://sistema-facturas-api.onrender.com/proveedor/eliminar/${cuitEliminar}`);
+      const response = await axios.delete(`http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/proveedor/eliminar/${cuitEliminar}`);
       console.log(response.data); // Verifica la respuesta del servidor en la consola
-      const result = await axios.get('https://sistema-facturas-api.onrender.com/proveedor');
+      const result = await axios.get('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/proveedor');
       setProveedores(result.data);
     } catch (error) {
       console.log(error.response.data);
