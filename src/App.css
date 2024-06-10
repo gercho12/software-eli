@@ -117,17 +117,19 @@
 
         .app{
             display: flex;
+            max-height: 100vh;
         }
 
         .dashboard{
             box-sizing: border-box;
             padding: 25px;
-            width: 100%;
             display: flex;
+            flex: 1;
             flex-direction: column;
             gap: 15px;
-            height: 100vh;
-            overflow-x: auto;
+            /* overflow: hidden; */
+            overflow: auto;
+
         }
 
         .dashboard .tituloprinc{
@@ -213,19 +215,18 @@
         .dashboard .grid{
             display: flex;
             gap: 10px;
-            width: 100%;
             flex: 1;
-            max-height: 650px;
+            overflow: hidden;
+            
+            /* max-height: 650px; */
         }
         .dashboard .grid .left{
             display: flex;
             flex-direction: column;
             gap: 10px;
             min-width: 0px;
-            flex: 1;
-            height: 100%;
             border-radius: 45px;
-            min-height: 560px;
+            /* min-height: 560px; */
         }
         .dashboard .grid .right{
             border-radius: 45px;
@@ -234,7 +235,8 @@
             background-color: rgba(0, 0, 0, 0.06);
             width:28%;
             min-width: 380px;
-            height: auto;
+            flex: .28;
+
             box-sizing: border-box;
             padding-inline: 22px;
             padding-block: 20px;
@@ -524,8 +526,8 @@
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            width: 100%;
-            height: 100%;
+            flex: 1;
+            max-height: 100%;
             border-radius: 45px;
             background-color: rgba(0, 0, 0, 0.06);
             padding-block: 20px;
@@ -551,8 +553,6 @@
             margin-bottom: -5px;
         }
         .dashboard .grid .left .bottom .grafico{
-            width: 100%;
-            /* background-color: rgba(0, 0, 0, 0.06); */
             height: 100%;
             display: flex;
             gap: 35px;
@@ -564,7 +564,7 @@
 
         .dashboard .grid .left .bottom .grafico .intervaloUnidad{
             width: 50px;
-            height: 350px;
+            height: 100%;
             border-radius: 25px;
             display: flex;
             flex-direction: column;
