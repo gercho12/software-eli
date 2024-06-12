@@ -225,6 +225,7 @@
             flex-direction: column;
             gap: 10px;
             min-width: 0px;
+            flex: 1;
             border-radius: 45px;
             /* min-height: 560px; */
         }
@@ -233,7 +234,6 @@
             display: flex;
             flex-direction: column;
             background-color: rgba(0, 0, 0, 0.06);
-            width:28%;
             min-width: 380px;
             flex: .28;
 
@@ -485,6 +485,7 @@
             .dashboard .grid {
                display: flex;
                flex-direction: column;
+            overflow:visible;
             max-height: none;
 
              }
