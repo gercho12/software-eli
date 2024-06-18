@@ -21,7 +21,7 @@ const Proveedores = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/proveedor');
+        const result = await axios.get('http://ec2-3-135-217-78.us-east-2.compute.amazonaws.com:8800/proveedor');
         setProveedores(result.data);
         console.log(result)
       } catch (error) {
@@ -76,9 +76,9 @@ const Proveedores = () => {
       nota: valorNota,
     };
     try {
-      await axios.put(`http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/proveedor/${seleccionadoProveedor.cuit}`, datosActualizados);
+      await axios.put(`http://ec2-3-135-217-78.us-east-2.compute.amazonaws.com:8800/proveedor/${seleccionadoProveedor.cuit}`, datosActualizados);
       // Update the proveedores state with the new data
-      const result = await axios('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/proveedor');
+      const result = await axios('http://ec2-3-135-217-78.us-east-2.compute.amazonaws.com:8800/proveedor');
       setProveedores(result.data);
       setSeleccionadoProveedor(datosActualizados)
     } catch (error) {
@@ -98,9 +98,9 @@ const Proveedores = () => {
     console.log(datosColocados);
   
     try {
-      const response = await axios.post('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/proveedor/creacion', datosColocados);
+      const response = await axios.post('http://ec2-3-135-217-78.us-east-2.compute.amazonaws.com:8800/proveedor/creacion', datosColocados);
       console.log(response.data); // Verifica la respuesta del servidor en la consola
-      const result = await axios.get('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/proveedor');
+      const result = await axios.get('http://ec2-3-135-217-78.us-east-2.compute.amazonaws.com:8800/proveedor');
       setProveedores(result.data);
     } catch (error) {
       console.log(error.response.data);
@@ -120,9 +120,9 @@ const Proveedores = () => {
   const handleEliminar = async (cuitEliminar) => {
   
     try {
-      const response = await axios.delete(`http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/proveedor/eliminar/${cuitEliminar}`);
+      const response = await axios.delete(`http://ec2-3-135-217-78.us-east-2.compute.amazonaws.com:8800/proveedor/eliminar/${cuitEliminar}`);
       console.log(response.data); // Verifica la respuesta del servidor en la consola
-      const result = await axios.get('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/proveedor');
+      const result = await axios.get('http://ec2-3-135-217-78.us-east-2.compute.amazonaws.com:8800/proveedor');
       setProveedores(result.data);
     } catch (error) {
       console.log(error.response.data);
@@ -199,12 +199,12 @@ const Proveedores = () => {
             <div className="botones">
 
             <button className="guardar" onClick={handleGuardarCreacion}>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6"><path strokeLinecap="round" strokeLinejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15" /></svg>
               Cargar
             </button> 
         </div>
         <div className="dataProveedor">
-          <h3 className='tituloData'>Edicion de proveedor</h3>
+          <h3 className='tituloData'>Creacion de proveedor</h3>
           <input 
             className='nombreProveedor' 
             onChange={(event) => setNuevoProveedor({...nuevoProveedor, nombre: event.target.value})} 

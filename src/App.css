@@ -495,6 +495,14 @@
                 min-width: 250px;
 
              }
+             .dashboard .grid .left .bottom{
+                min-height: 350px;
+
+             }
+             .dashboard .grid .left .bottom .grafico{
+                min-height: 100%;
+
+             }
            }
            @media (max-width: 425px) {
             .dashboard .grid .left .targetas{
@@ -716,19 +724,21 @@
             color: #3b3b3b;
             margin-left: 24px;
             height: 32px;
-
+            border-radius: 25px;
+            border: none;
+            padding-left: 10px;
             width:max-content;
             margin-bottom: 10px;
         }
 
         .proveedores .right .dataProveedor .informacion input{
-            font-weight: 500;
-            font-size: 14px;
-            height: 22px;
+            font-weight: 400;
+            font-size: 16px;
+            height: 25px;
             width: 70%;
         }
 
-        input[type="text"]{
+        input[type="text"], input[type="number"]{
             border-radius: 25px;
             border: none;
             padding-left: 10px;
@@ -1560,6 +1570,7 @@
             height: 55px;
             background-color: rgb(241, 241, 241);
             position: fixed;
+            bottom: 0;
 
         }
         .navbarInner{
@@ -1627,9 +1638,9 @@
             box-sizing: border-box;
             height: 45px;
         }
-        .app{
+        /* .app{
             flex-direction: column-reverse;
-        }
+        } */
     }
 
     @media (max-width: 585px) {

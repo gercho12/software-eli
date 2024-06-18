@@ -24,7 +24,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchFacturasNoa = async () => {
       try {
-        const response = await axios.get('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/facturasNoAbonadas');
+        const response = await axios.get('http://ec2-3-135-217-78.us-east-2.compute.amazonaws.com:8800/facturasNoAbonadas');
         if (!Array.isArray(response.data) || response.data.length === 0) {
           setFacturasNoa(null);
         } else {
@@ -56,7 +56,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchAños = async () => {
       try {
-        const response = await axios.get('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/anos');
+        const response = await axios.get('http://ec2-3-135-217-78.us-east-2.compute.amazonaws.com:8800/anos');
         setAnos(response.data);
       } catch (error) {
         console.error('Error al obtener los años:', error);
@@ -70,7 +70,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchIntervalos = async () => {
       try {
-        const response = await axios.get(`http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/facturas/${añoSeleccionado}`);
+        const response = await axios.get(`http://ec2-3-135-217-78.us-east-2.compute.amazonaws.com:8800/facturas/${añoSeleccionado}`);
         const facturas = response.data;
         if (facturas.length > 0) {
           // setSeleccionadoIntervalo(facturas[facturas.length - 1].mes);
@@ -142,9 +142,9 @@ function Dashboard() {
       const estadoAbonado = estadoAbonadoAntiguo === 0 ? 1 : 0;
       console.log(estadoAbonado);
       try {
-        await axios.put(`http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/actualizarFactura/${id}/${estadoAbonado}`);
+        await axios.put(`http://ec2-3-135-217-78.us-east-2.compute.amazonaws.com:8800/actualizarFactura/${id}/${estadoAbonado}`);
         try {
-          const response = await axios.get('http://ec2-3-144-126-122.us-east-2.compute.amazonaws.com:8800/facturasNoAbonadas');
+          const response = await axios.get('http://ec2-3-135-217-78.us-east-2.compute.amazonaws.com:8800/facturasNoAbonadas');
           if (!Array.isArray(response.data) || response.data.length === 0) {
             setFacturasNoa(null);
           } else {
@@ -276,7 +276,7 @@ function Dashboard() {
                         </svg>
                       </div>
                       <h3 className='ellipsis'>#{numeroFactura}</h3>
-                      <h2 >{costoTotal} </h2>
+                      <h2 >${costoTotal} </h2>
                       <h2>{diferenciaDias >= 2 ? (diferenciaDias+" dias") : diferenciaDias === 1 ? (diferenciaDias+" dia") : ("vencido")} </h2>
                       <div className="masInfo boton">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
