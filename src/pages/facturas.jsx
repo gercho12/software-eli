@@ -576,7 +576,7 @@ const guardarDatosFactura = async () => {
                   {otrosImpuestos ? (otrosImpuestos.map((impuesto, index) => (
                     <div className="dato impuesto" key={index}>
                       <input type="text" placeholder="nombre" value={impuesto.nombre} onChange={(e) => handleImpuestoChange(e, index, "nombre")} />
-                      <input type="number" placeholder="monto" value={impuesto.monto} onChange={(e) => handleImpuestoChange(e, index, "monto")} />
+                      <input type="number" placeholder="monto" defaultValue={impuesto.monto} onChange={(e) => handleImpuestoChange(e, index, "monto")} />
                     </div>
                   ))):("")}
                   <div className="agregarImpuesto" onClick={agregarImpuesto}>
@@ -715,7 +715,7 @@ const guardarDatosFactura = async () => {
                 <h3 className="dato">Tipo de factura: <span>{tipoFactura}</span></h3>
                 <h3 className="dato">Proveedor: <span>{proveedorEmisor}</span></h3>
                 <h3 className="dato">Costo total: <span>${costoTotal}</span></h3>
-                <h3 className="dato vencimiento">Vencimiento: <span className={diferenciaDias ? (diferenciaDias < 10 && estadoAbonado === 0 ? "cercano" : "") : ("")}>{diferenciaDias ? (diferenciaDias + "dias") : ("")} </span></h3>
+                <h3 className="dato vencimiento">Vencimiento: <span className={diferenciaDias ? (diferenciaDias < 10 && estadoAbonado === 0 ? "cercano" : "") : ("")}>{diferenciaDias ? (diferenciaDias + " dias") : ("")} </span></h3>
               </div>
             )}
             {facturaSeleccionada === id ? (
