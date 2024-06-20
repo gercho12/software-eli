@@ -639,7 +639,7 @@ const guardarDatosFactura = async () => {
                       <h3 className="dato">Percepcion de IVA: <span>${percepcionIVAMonto}</span></h3>
                       <h3 className="dato">Ingresos Brutos: <span>${IIBBMonto}</span></h3>
                       <h3 className="dato">Percepcion de ingresos brutos: <span>${percepcionIBBMonto}</span></h3>
-                      {
+                      { otrosImpuestos ?(
                         otrosImpuestos.split(';').filter(impuesto => impuesto!== '').map((impuesto, index) => {
                           const [nombreImpuesto, montoImpuesto] = impuesto.split(',');
                           return (
@@ -647,7 +647,7 @@ const guardarDatosFactura = async () => {
                               {nombreImpuesto}: <span>${montoImpuesto}</span>
                             </h3>
                           );
-                        })
+                        })) : ""
                       }
 
                     </div>
@@ -679,9 +679,9 @@ const guardarDatosFactura = async () => {
                     {Codigo && <h3 className="dato">Codigo: <span>{Codigo}</span></h3>}
                     {Descripcion && <h3 className="dato">Descripcion: <span>{Descripcion}</span></h3>}
                     {VolumenUnidad && MedicionVolumen && <h3 className="dato">Volumen unidad: <span>{VolumenUnidad + " " + MedicionVolumen}</span></h3>}
+                    {Bultos && <h3 className="dato">Bultos: <span>{Bultos} </span></h3>}
                     {UnidadesBulto && <h3 className="dato">Unidades bulto: <span>{UnidadesBulto}</span></h3>}
                     {PrecioBulto && <h3 className="dato">Precio bulto: <span>${PrecioBulto} </span></h3>}
-                    {Bultos && <h3 className="dato">Bultos: <span>{Bultos} </span></h3>}
                     {(Bonificacion || Bonificacion !== 0) && <h3 className="dato">Bonificacion: <span>{Bonificacion*100}% </span></h3>}
                     {Importe && <h3 className="dato">Importe: <span>${Importe} </span></h3>}
                   </div>
