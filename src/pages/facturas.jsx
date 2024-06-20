@@ -210,7 +210,7 @@ const guardarDatosFactura = async () => {
             
                 let diferenciaDias = null;
                 if (fechaVencimiento && fechaActual) {
-                  const diferenciaMilisegundos = fechaVencimiento - fechaActual;
+                  const diferenciaMilisegundos = fechaVencimiento.getTime() - fechaActual.getTime();
                   diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
                 }
             
