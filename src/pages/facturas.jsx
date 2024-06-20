@@ -396,13 +396,27 @@ const guardarDatosFactura = async () => {
           setFacturas(null);
         } else {
           const facturasConDiferencia = result.data.map(factura => {
-            const fechaVencimiento = new Date(factura.fechaVencimiento);
+            let fechaVencimiento = null;
+            if (factura.fechaVencimiento) {
+              const fechaVencimientoString = factura.fechaVencimiento.trim();
+              if (fechaVencimientoString) {
+                fechaVencimiento = new Date(fechaVencimientoString);
+                if (isNaN(fechaVencimiento.getTime())) {
+                  fechaVencimiento = null;
+                }
+              }
+            }
+        
             const fechaActual = new Date();
-            const diferenciaMilisegundos = fechaVencimiento - fechaActual;
-            const diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
-
+        
+            let diferenciaDias = null;
+            if (fechaVencimiento) {
+              const diferenciaMilisegundos = fechaVencimiento - fechaActual;
+              diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+            }
+        
             // Agrega la propiedad "diferenciaDias" al objeto de la factura
-            return { ...factura, diferenciaDias };
+            return {...factura, diferenciaDias };
           });
 
           setFacturas(facturasConDiferencia);
@@ -610,8 +624,8 @@ const guardarDatosFactura = async () => {
   {facturasOrdenadas.length > 0 ? (
     facturasOrdenadas.map(({ id, tipoFactura, numeroFactura, fechaEmision, fechaVencimiento, proveedorEmisor, costoTotal, IVAMonto, percepcionIBBMonto, IIBBMonto, percepcionIVAMonto, estadoAbonado, otrosImpuestos, diferenciaDias, items }) => {
       const datos = { id, tipoFactura, numeroFactura, fechaEmision, fechaVencimiento, proveedorEmisor, costoTotal, IVAMonto, percepcionIBBMonto, IIBBMonto, percepcionIVAMonto, estadoAbonado, otrosImpuestos, diferenciaDias }
-      const fechaEmisionCorrecta = new Date(fechaEmision).toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' });      
-      const fechaVencimientoCorrecta = new Date(fechaVencimiento).toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' });
+      const fechaEmisionCorrecta = fechaEmision ? new Date(fechaEmision).toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }) : null;
+      const fechaVencimientoCorrecta = fechaVencimiento ? new Date(fechaVencimiento).toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }) : null;
       return (
         <div className="factura" key={id}>
           <div className={facturaSeleccionada === id ? "topFactura selected" : "topFactura"}>
@@ -659,7 +673,7 @@ const guardarDatosFactura = async () => {
                 <h3 className="dato">Tipo de factura: <span>{tipoFactura}</span></h3>
                 <h3 className="dato">Proveedor: <span>{proveedorEmisor}</span></h3>
                 <h3 className="dato">Costo total: <span>${costoTotal}</span></h3>
-                <h3 className="dato vencimiento">Vencimiento: <span className={diferenciaDias < 10 && estadoAbonado === 0 ? "cercano" : ""}>{diferenciaDias} dias</span></h3>
+                <h3 className="dato vencimiento">Vencimiento: <span className={diferenciaDias ? (diferenciaDias < 10 && estadoAbonado === 0 ? "cercano" : "") : ("")}>{diferenciaDias ? (diferenciaDias) : ("")} dias</span></h3>
               </div>
             )}
             {facturaSeleccionada === id ? (
