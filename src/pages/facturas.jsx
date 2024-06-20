@@ -195,13 +195,27 @@ const guardarDatosFactura = async () => {
               setFacturas(null);
             } else {
               const facturasConDiferencia = result.data.map(factura => {
-                const fechaVencimiento = new Date(factura.fechaVencimiento);
+                let fechaVencimiento = null;
+                if (factura.fechaVencimiento) {
+                  const fechaVencimientoString = factura.fechaVencimiento.trim();
+                  if (fechaVencimientoString) {
+                    fechaVencimiento = new Date(fechaVencimientoString);
+                    if (isNaN(fechaVencimiento.getTime())) {
+                      fechaVencimiento = null;
+                    }
+                  }
+                }
+            
                 const fechaActual = new Date();
-                const diferenciaMilisegundos = fechaVencimiento - fechaActual;
-                const diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
-    
+            
+                let diferenciaDias = null;
+                if (fechaVencimiento && fechaActual) {
+                  const diferenciaMilisegundos = fechaVencimiento - fechaActual;
+                  diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+                }
+            
                 // Agrega la propiedad "diferenciaDias" al objeto de la factura
-                return { ...factura, diferenciaDias };
+                return {...factura, diferenciaDias };
               });
     
               setFacturas(facturasConDiferencia);
@@ -228,13 +242,27 @@ const guardarDatosFactura = async () => {
           setFacturas(null);
         } else {
           const facturasConDiferencia = result.data.map(factura => {
-            const fechaVencimiento = new Date(factura.fechaVencimiento);
+            let fechaVencimiento = null;
+            if (factura.fechaVencimiento) {
+              const fechaVencimientoString = factura.fechaVencimiento.trim();
+              if (fechaVencimientoString) {
+                fechaVencimiento = new Date(fechaVencimientoString);
+                if (isNaN(fechaVencimiento.getTime())) {
+                  fechaVencimiento = null;
+                }
+              }
+            }
+        
             const fechaActual = new Date();
-            const diferenciaMilisegundos = fechaVencimiento - fechaActual;
-            const diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
-
+        
+            let diferenciaDias = null;
+            if (fechaVencimiento && fechaActual) {
+              const diferenciaMilisegundos = fechaVencimiento - fechaActual;
+              diferenciaDias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+            }
+        
             // Agrega la propiedad "diferenciaDias" al objeto de la factura
-            return { ...factura, diferenciaDias };
+            return {...factura, diferenciaDias };
           });
 
           setFacturas(facturasConDiferencia);
