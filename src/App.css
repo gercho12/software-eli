@@ -1717,3 +1717,167 @@
         flex-wrap: wrap;
         width: 100%;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .recetas{
+        display: flex;
+        box-sizing: border-box;
+        padding: 25px;
+        gap: 10px;
+        height: 100vh;
+        overflow-x: auto;
+        width: 100%;
+        flex-wrap: wrap;
+        align-items: end;
+    }
+
+    .recetas .left{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        flex: 1;
+        height: 100%;
+
+    }
+    .recetas .right{
+        width: 380px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        height: 88.5%;
+        background-color: #F0F0F0; 
+        padding-block: 20px;
+        padding-inline: 24px;
+        border-radius: 45px;
+    }
+
+    .recetas .right .top{
+        display: flex;
+        width: 100%;
+        gap: 10px;
+    }
+    .recetas .right .top input{
+        border: none;
+        flex: 1;
+        border-radius: 40px;
+        padding-left:15px ;
+        font-weight: 400;
+        font-size: 16px;
+        height: 50px;
+    }
+    .recetas .right .top button{
+        border: none;
+        border-radius: 40px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .recetas .right h2{
+        font-size: 22px;
+        font-weight: 500;
+        color: #3b3b3b;
+    }
+    .recetas .right .listadoRecetas{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        padding-top: 15px;
+    }
+    .recetas .right .listadoRecetas .receta{
+        width: 100%;
+        padding: 15px;
+        padding-block: 10px;
+        border-radius: 20px;
+        background-color: rgba(0, 0, 0, 0.06);
+
+    }
+
+    /* .recetas .right h3{
+        font-size: 18px;
+        font-weight: 300;
+        color: #3b3b3b;
+    } */
+
+
+    .recetas .left .listaItems{
+        background-color: rgba(0, 0, 0, 0.06);
+        padding-block: 20px;
+        padding-inline: 24px;
+        border-radius: 45px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        height: 100%;
+    }
+    .recetas .left .listaItems .listado{
+        overflow-y: auto;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+
+    }
+    .recetas .left .listaItems .listado .item{
+        background-color: rgba(0, 0, 0, 0.06);
+        border-radius: 25px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-block: 9px;
+        padding-inline: 18px;
+        flex: 1;
+        min-width: 190px;
+        max-width: 230px;
+    }
+    .recetas .left .listaItems .listado .item h2{
+        font-size: 20px;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #3b3b3b;
+        max-width: 100%;
+
+    }
+    .recetas .left .listaItems .listado .item h3{
+        font-size: 16px;
+        font-weight: 300;
+        background-color: rgba(97, 174, 49, 0.151);
+        color: rgb(97, 174, 49);
+        width: fit-content;
+        height: fit-content;
+        padding-inline: 10px;
+        padding-block: 2px;
+        border-radius: 50px;
+
+    }
+
+    .recetas .left .listaItems .top{
+        display: flex;
+        width: 100%;
+    }
+    .recetas .left .listaItems .top input{
+        border: none;
+        flex: 1;
+        border-radius: 40px;
+        padding-left:15px ;
+        font-weight: 400;
+        font-size: 16px;
+        height: 50px;
+    }
