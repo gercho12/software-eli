@@ -1784,11 +1784,7 @@
         height: 50px;
     }
 
-    .recetas .right h2{
-        font-size: 22px;
-        font-weight: 500;
-        color: #3b3b3b;
-    }
+
     .recetas .right .listadoRecetas{
         display: flex;
         flex-direction: column;
@@ -1803,10 +1799,104 @@
         padding: 15px;
         padding-block: 10px;
         border-radius: 20px;
-        background-color: rgba(0, 0, 0, 0.06);
+        background-color: #EAEAEA;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        cursor: pointer;
+
+    }
+    .recetas .right .listadoRecetas .receta .ingredientes{
+        display: flex;
+        flex-direction: column;
+        margin-top: -5px;
+
+    }
+    .recetas .right .listadoRecetas .receta button.eliminar{
+        height: 28px;
+        background-color: rgba(238, 49, 49);
+        color: #ffffff;
+        border-radius: 10px;
+        font-weight: 500;
+        font-size: 14px;
+        width: fit-content;
+    }
+
+    .recetas .right .listadoRecetas .receta .ingredientes h2{
+        font-size: 18px;
+        font-weight: 400;
+        color: #202020;
+    }
+    .recetas .right .listadoRecetas .receta .ingredientes h3{
+        font-size: 18px;
+        font-weight: 300;
+        color: #202020;
+    }
+    .recetas .right .listadoRecetas .receta .ingredientes h3 span{
+        font-weight: 400;
+
+    }
+    .recetas .right .listadoRecetas .receta .ingredientes h3 span.monto{
+        color: #60AE31;
+
 
     }
 
+    .recetas .right .listadoRecetas .receta .ingredientes h3::before{
+        content: "•";
+        margin-inline: 5px; 
+    }
+
+    .recetas .right .listadoRecetas .receta .detalles{
+        display: flex;
+        gap: 10px;
+
+    }
+    .recetas .right .listadoRecetas .receta h2{
+        font-size: 20px;
+        font-weight: 500;
+        color: #3b3b3b;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .recetas .right .listadoRecetas .receta .detalles h3{
+        background-color: #3b3b3b;
+        padding-block: 2px;        
+        font-size: 15px;
+        padding-inline: 8px;
+        border-radius: 20px;
+        display: flex;
+        gap: 5px;
+        align-items: center;
+    }
+    .recetas .right .listadoRecetas .receta .detalles h2{
+        font-size: 17px;
+        font-weight: 300;    
+    }
+
+    .recetas .right .listadoRecetas .receta.seleccionado h2{
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+    }
+    .recetas .right .listadoRecetas .receta .detalles h3.volumen{
+        background-color: rgba(186, 150, 19, 0.151);
+        color: #BA9513;
+    }
+    .recetas .right .listadoRecetas .receta .detalles h3.monto{
+        background-color: rgba(97, 174, 49, 0.151);
+        color: #60AE31;
+    }
+    .recetas .right .listadoRecetas .receta .detalles h3.unidades{
+        background-color: rgba(59, 59, 59, 0.05);
+        color: #3b3b3b;
+    }
+    .recetas .right .listadoRecetas .receta .detalles h3 svg{
+        width: 20px;
+        height: 20px;
+    }
+  
     /* .recetas .right h3{
         font-size: 18px;
         font-weight: 300;
@@ -1842,11 +1932,11 @@
         padding-block: 9px;
         padding-inline: 18px;
         flex: 1;
-        min-width: 190px;
-        max-width: 230px;
+        min-width: 210px;
+        max-width: 250px;
     }
     .recetas .left .listaItems .listado .item h2{
-        font-size: 20px;
+        font-size: 16px;
         font-weight: 500;
         white-space: nowrap;
         overflow: hidden;
@@ -1856,7 +1946,7 @@
 
     }
     .recetas .left .listaItems .listado .item h3{
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 300;
         background-color: rgba(97, 174, 49, 0.151);
         color: rgb(97, 174, 49);
@@ -1880,4 +1970,179 @@
         font-weight: 400;
         font-size: 16px;
         height: 50px;
+    }
+    .recetas .modal{
+        background-color: white;
+        gap: 10px;
+        height: fit-content;
+        width: 700px;
+
+    }
+    .recetas .modal input{
+        border: #C2C2C2 solid 1px;
+    }
+    .recetas .modal input.nombre{
+        min-height: 35px;
+    }
+    .recetas .modal input[type="number"]{
+        border: #C2C2C2 solid 1px;
+        height: 35px;
+        width: 75px;
+    }
+    .recetas .modal .ingredientes{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        height: 100%;
+    }
+    .recetas .modal .ingredientes .agregarIngredientes{
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        background: #EAEAEA;
+        border-radius: 100px;
+        padding-inline: 12px;
+        padding-block: 6px;
+        position: relative;
+    }
+    .recetas .modal .ingredientes .agregarIngredientes button{
+        border-radius: 100px;
+        width: 40px;
+        height: calc(100% - 8px);
+        position: absolute;
+        right: 4px;
+    }
+
+    .recetas .modal .ingredientes .agregarIngredientes h3{
+        font-weight: 300;
+        font-size: 15px;
+    }
+    .recetas .modal .custom-select {
+        position: relative;
+      }
+      .recetas .modal .agregarIngredientes input{
+        height: 25px;
+      }
+      
+      .recetas .modal .select-items {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 250px;
+        right: 0;
+        z-index: 1000;
+        max-height: 180px;
+        overflow-y: auto;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-top: none;
+        border-radius: 0 0 4px 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      
+      .recetas .modal .select-items div {
+        padding: 10px;
+        cursor: pointer;
+      }
+      
+      .recetas .modal .select-items div:hover {
+        background-color: #f0f0f0;
+      }
+
+      .recetas .modal .ingredientesLista h3{
+        font-size: 18px;
+        font-weight: 300;
+        color: #202020;
+    }
+    .recetas .modal .ingredientesLista div{
+        display: flex;
+        gap: 5px;
+        align-items: center;
+    }
+    .recetas .modal .ingredientesLista {
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+        height: 200px;
+        overflow-y: auto;
+    }
+    .recetas .modal .ingredientesLista div button{
+        cursor: pointer;
+        background-color: rgba(238, 49, 49, 0.158);
+        padding-block: 2px;   
+        color: #EE3131;     
+        font-size: 15px;
+        padding-inline: 8px;
+        border-radius: 20px;
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        height: 100%;
+
+    }
+
+    .recetas .modal .ingredientesLista h3 span{
+        font-weight: 400;
+
+    }
+    .recetas .modal .ingredientesLista h3 span.monto{
+        color: #60AE31;
+
+
+    }
+
+    .recetas .modal .ingredientesLista h3::before{
+        content: "•";
+        margin-inline: 5px; 
+    }
+
+    .recetas .modal  .detalles{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+    }
+        .recetas .modal  .detalles div{
+        display: flex;
+        gap: 10px;
+        width: 100%;
+
+    }
+    .recetas .modal  .detalles h3{
+        background-color: #3b3b3b;
+        padding-block: 2px;        
+        font-size: 15px;
+        padding-inline: 8px;
+        border-radius: 20px;
+        display: flex;
+        gap: 5px;
+        align-items: center;
+    }
+    .recetas .modal  .detalles h3.volumen{
+        background-color: rgba(186, 150, 19, 0.151);
+        color: #BA9513;
+    }
+    .recetas .modal  .detalles h3.monto{
+        background-color: rgba(97, 174, 49, 0.151);
+        color: #60AE31;
+    }
+    .recetas .modal  .detalles h3.unidades{
+        background-color: rgba(59, 59, 59, 0.05);
+        color: #3b3b3b;
+    }
+    .recetas .modal  .detalles h3.unidades input{
+        height: 25px;
+    }
+    .recetas .modal  .detalles h3 svg{
+        width: 20px;
+        height: 20px;
+    }
+    .recetas .modal  .detalles button.guardar{
+        height: auto;
+        border-radius: 10px;
+        background-color: #3b3b3b;
+        float: right;
+        display: flex;
+        width: 150px;
+        color: #ffffff;
     }

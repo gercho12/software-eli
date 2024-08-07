@@ -244,22 +244,22 @@ function Dashboard() {
                 {/* <span className='gananciaTotal'>${calcularGananciaTotal()}</span> Ganancia */}
               </h3>
               <div className="grafico">
-                {intervalos.map(({ mes, egresos, ivaTotal, PercepcionIvaTotal, IIBBTotal, PercepcionIIBBTotal}) => {
-                  const seleccionado = seleccionadoIntervalo === mes;
-                  const porcentajeEgreso = (egresos / maximoEgreso) * 100;
-                  console.log(porcentajeEgreso);
+  {intervalos.sort((a, b) => a.mes - b.mes).map(({ mes, egresos, ivaTotal, PercepcionIvaTotal, IIBBTotal, PercepcionIIBBTotal}) => {
+    const seleccionado = seleccionadoIntervalo === mes;
+    const porcentajeEgreso = (egresos / maximoEgreso) * 100;
+    console.log(porcentajeEgreso);
 
-                  return (
-                    <UnidadIntervalo
-                      key={mes}
-                      intervalo={obtenerNombreMes(mes)}
-                      porcentajeEgresos={porcentajeEgreso}
-                      seleccionado={seleccionado}
-                      handleIntervaloClick={() => handleIntervaloClick(mes, egresos, ivaTotal, PercepcionIvaTotal, IIBBTotal, PercepcionIIBBTotal)}
-                    />
-                  );
-                })}
-              </div>
+    return (
+      <UnidadIntervalo
+        key={mes}
+        intervalo={obtenerNombreMes(mes)}
+        porcentajeEgresos={porcentajeEgreso}
+        seleccionado={seleccionado}
+        handleIntervaloClick={() => handleIntervaloClick(mes, egresos, ivaTotal, PercepcionIvaTotal, IIBBTotal, PercepcionIIBBTotal)}
+      />
+    );
+  })}
+</div>
             </div>
           </div>
           <div className="right">
